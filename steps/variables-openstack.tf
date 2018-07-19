@@ -15,6 +15,11 @@ EOF
   type = "string"
 }
 
+variable "tectonic_openstack_base_image" {
+  type        = "string"
+  description = "Name of the base image to use for the nodes."
+}
+
 variable "tectonic_openstack_ssh_key" {
   type        = "string"
   description = "Name of an SSH key located within the AWS region. Example: coreos-user."
@@ -46,6 +51,39 @@ variable "tectonic_openstack_ec2_ami_override" {
   type        = "string"
   description = "(optional) AMI override for all nodes. Example: `ami-foobar123`."
   default     = ""
+}
+
+variable "tectonic_openstack_etcd_extra_sg_ids" {
+  description = <<EOF
+(optional) List of additional security group IDs for etcd nodes.
+
+Example: `["sg-51530134", "sg-b253d7cc"]`
+EOF
+
+  type    = "list"
+  default = []
+}
+
+variable "tectonic_openstack_master_extra_sg_ids" {
+  description = <<EOF
+(optional) List of additional security group IDs for master nodes.
+
+Example: `["sg-51530134", "sg-b253d7cc"]`
+EOF
+
+  type    = "list"
+  default = []
+}
+
+variable "tectonic_openstack_worker_extra_sg_ids" {
+  description = <<EOF
+(optional) List of additional security group IDs for worker nodes.
+
+Example: `["sg-51530134", "sg-b253d7cc"]`
+EOF
+
+  type    = "list"
+  default = []
 }
 
 variable "tectonic_openstack_etcd_sg_ids" {

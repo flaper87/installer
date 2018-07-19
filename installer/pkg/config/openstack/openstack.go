@@ -29,6 +29,7 @@ type OpenStack struct {
 	Profile                   string `json:"tectonic_openstack_profile,omitempty" yaml:"profile,omitempty"`
 	Region                    string `json:"tectonic_openstack_region,omitempty" yaml:"region,omitempty"`
 	SSHKey                    string `json:"tectonic_openstack_ssh_key,omitempty" yaml:"sshKey,omitempty"`
+	BaseImage                 string `json:"tectonic_openstack_base_image,omitempty" yaml:"baseImage,omitempty"`
 	VPCCIDRBlock              string `json:"tectonic_openstack_vpc_cidr_block,omitempty" yaml:"vpcCIDRBlock,omitempty"`
 	Worker                    `json:",inline" yaml:"worker,omitempty"`
 }
