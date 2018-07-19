@@ -82,6 +82,7 @@ func (c *Cluster) Validate() []error {
 	errs = append(errs, c.validateIgnitionFiles()...)
 	errs = append(errs, c.validateNetworking()...)
 	errs = append(errs, c.validateAWS()...)
+	errs = append(errs, c.validateOpenStack()...)
 	errs = append(errs, c.validateCL()...)
 	errs = append(errs, c.validatePullSecret()...)
 	errs = append(errs, c.validateLibvirt()...)
@@ -124,6 +125,15 @@ func (c *Cluster) validateAWS() []error {
 		errs = append(errs, err)
 	}
 	return errs
+}
+
+// validateOpenStack validates all fields specific to AWS.
+func (c *Cluster) validateOpenStack() []error {
+	var errs []error
+	if c.Platform != PlatformOpenStack {
+		return errs
+	}
+    return errs
 }
 
 // validateCL validates all fields specific to Container Linux.

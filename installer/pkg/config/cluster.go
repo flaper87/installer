@@ -8,6 +8,7 @@ import (
 	"gopkg.in/yaml.v2"
 
 	"github.com/openshift/installer/installer/pkg/config/aws"
+	"github.com/openshift/installer/installer/pkg/config/openstack"
 	"github.com/openshift/installer/installer/pkg/config/libvirt"
 )
 
@@ -19,6 +20,8 @@ const (
 	IgnitionPathWorker = "worker.ign"
 	// PlatformAWS is the platform for a cluster launched on AWS.
 	PlatformAWS Platform = "aws"
+	// PlatformOpenStack is the platform for a cluster launched on AWS.
+	PlatformOpenStack Platform = "openstack"
 	// PlatformLibvirt is the platform for a cluster launched on libvirt.
 	PlatformLibvirt Platform = "libvirt"
 )
@@ -35,9 +38,9 @@ func (p *Platform) UnmarshalYAML(unmarshal func(interface{}) error) error {
 
 	platform := Platform(data)
 	switch platform {
-	case PlatformAWS, PlatformLibvirt:
+	case PlatformAWS, PlatformOpenStack, PlatformLibvirt:
 	default:
-		return fmt.Errorf("invalid platform specified (%s); must be one of %s", platform, []Platform{PlatformAWS, PlatformLibvirt})
+		return fmt.Errorf("invalid platform specified (%s); must be one of %s", platform, []Platform{PlatformAWS, PlatformOpenStack, PlatformLibvirt})
 	}
 
 	*p = platform
@@ -50,6 +53,12 @@ var defaultCluster = Cluster{
 		Profile:      aws.DefaultProfile,
 		Region:       aws.DefaultRegion,
 		VPCCIDRBlock: aws.DefaultVPCCIDRBlock,
+	},
+	OpenStack: openstack.OpenStack{
+		Endpoints:    openstack.EndpointsAll,
+		Profile:      openstack.DefaultProfile,
+		Region:       openstack.DefaultRegion,
+		VPCCIDRBlock: openstack.DefaultVPCCIDRBlock,
 	},
 	CA: CA{
 		RootCAKeyAlg: "RSA",
@@ -86,6 +95,7 @@ type Cluster struct {
 	Name            string `json:"tectonic_cluster_name,omitempty" yaml:"name,omitempty"`
 	Networking      `json:",inline" yaml:"networking,omitempty"`
 	NodePools       `json:"-" yaml:"nodePools"`
+	openstack.OpenStack `json:",inline" yaml:"openstack,omitempty"`
 	Platform        Platform `json:"tectonic_platform" yaml:"platform,omitempty"`
 	PullSecret      string   `json:"tectonic_pull_secret,omitempty" yaml:"pullSecret,omitempty"`
 	PullSecretPath  string   `json:"-" yaml:"pullSecretPath,omitempty"` // Deprecated: remove after openshift/release is ported to pullSecret

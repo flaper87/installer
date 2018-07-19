@@ -12,6 +12,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//installer/pkg/config/aws:go_default_library",
+        "//installer/pkg/config/openstack:go_default_library",
         "//installer/pkg/config/libvirt:go_default_library",
         "//installer/pkg/validate:go_default_library",
         "//vendor/github.com/Sirupsen/logrus:go_default_library",
@@ -29,6 +30,7 @@ go_test(
     embed = [":go_default_library"],
     deps = [
         "//installer/pkg/config/aws:go_default_library",
+        "//installer/pkg/config/openstack:go_default_library",
         "//installer/pkg/config/libvirt:go_default_library",
     ],
 )
