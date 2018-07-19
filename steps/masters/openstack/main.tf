@@ -16,5 +16,5 @@ module "container_linux" {
 }
 
 module "masters" {
-  source = "../../../modules/aws/master-asg"
+  source = "../../../modules/openstack/master-asg"
 }
