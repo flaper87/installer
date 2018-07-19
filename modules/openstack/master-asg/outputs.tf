@@ -6,7 +6,7 @@ output "subnet_ids" {
   value = "${var.subnet_ids}"
 }
 
-output "aws_lbs" {
+output "openstack_lbs" {
   value = "${var.aws_lbs}"
 }
 

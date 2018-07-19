@@ -1,1 +1,1 @@
-../../../modules/openstack/master-asg/variables.tf
+../../variables-openstack.tf
