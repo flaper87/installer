@@ -1,3 +1,16 @@
+// Mock values for now
+output "openstack_lbs" {
+  value = ""
+}
+
+output "master_sg_id" {
+  value = "default"
+}
+
+output "subnet_ids_masters" {
+  value = ["151f6f63-ae72-4383-9c71-86571b7b1a98"]
+}
+
 /*# Etcd
 output "etcd_sg_id" {
   value = "${module.vpc.etcd_sg_id}"
