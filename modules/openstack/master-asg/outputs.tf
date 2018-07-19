@@ -1,5 +1,5 @@
-/*output "aws_launch_configuration" {
-  value = "${aws_launch_configuration.master_conf.id}"
+output "openstack_compute_instance_v2" {
+  value = "${openstack_compute_instance_v2.master_conf.*.id}"
 }
 
 output "subnet_ids" {
@@ -7,9 +7,9 @@ output "subnet_ids" {
 }
 
 output "openstack_lbs" {
-  value = "${var.aws_lbs}"
+  value = "${var.openstack_lbs}"
 }
 
 output "cluster_id" {
   value = "${var.cluster_id}"
-}*/
+}
