@@ -27,7 +27,7 @@ resource "openstack_compute_instance_v2" "masters" {
   }
 
   network {
-    id = "${var.subnet_ids[0]}"
+    uuid = "${var.subnet_ids[0]}"
   }
 }
 
