@@ -350,6 +350,8 @@ func k8sCloudProvider(platform config.Platform) string {
 	switch platform {
 	case config.PlatformAWS:
 		return "aws"
+	case config.PlatformOpenStack:
+		return "openstack"
 	case config.PlatformLibvirt:
 		return ""
 	}
@@ -361,6 +363,8 @@ func tectonicCloudProvider(platform config.Platform) string {
 	switch platform {
 	case config.PlatformAWS:
 		return "aws"
+	case config.PlatformOpenStack:
+		return "openstack"
 	case config.PlatformLibvirt:
 		return "libvirt"
 	}

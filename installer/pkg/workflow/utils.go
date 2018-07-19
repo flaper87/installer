@@ -62,6 +62,8 @@ func platformPath(platform config.Platform) string {
 		return "libvirt"
 	case config.PlatformAWS:
 		return "aws"
+	case config.PlatformOpenStack:
+		return "openstack"
 	}
 	panic("invalid platform")
 }
