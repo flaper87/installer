@@ -2,6 +2,8 @@ admin:
   email: "a@b.c"
   password: "verysecure"
 openstack:
+  baseImage:
+
   etcd:
     # Instance size for the etcd node(s). Example: `m1.medium`. Read the [etcd recommended hardware](https://coreos.com/etcd/docs/latest/op-guide/hardware.html) guide for best performance
     flavorName: m1.medium
