@@ -1,4 +1,4 @@
-data "terraform_remote_state" "topology" {
+/*data "terraform_remote_state" "topology" {
   backend = "local"
 
   config {
@@ -11,4 +11,4 @@ locals {
   tnc_s3_bucket_domain_name = "${data.terraform_remote_state.topology.tnc_s3_bucket_domain_name}"
   tnc_elb_dns_name          = "${data.terraform_remote_state.topology.tnc_elb_dns_name}"
   tnc_elb_zone_id           = "${data.terraform_remote_state.topology.tnc_elb_zone_id}"
-}
+}*/
