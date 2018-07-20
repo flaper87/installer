@@ -1,6 +1,6 @@
 // Mock values for now
 output "openstack_lbs" {
-  value = ""
+  value = []
 }
 
 output "master_sg_id" {

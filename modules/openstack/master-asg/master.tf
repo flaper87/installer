@@ -20,7 +20,7 @@ resource "openstack_compute_instance_v2" "master_conf" {
   image_id        = "${data.openstack_images_image_v2.masters_img.id}"
   flavor_id       = "${data.openstack_compute_flavor_v2.masters_flavor.id}"
   key_pair        = "${var.ssh_key}"
-  security_groups = ["default"]
+  security_groups = ["${var.master_sg_ids}"]
 
   metadata {
       Name               = "${var.cluster_name}-master"
