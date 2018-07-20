@@ -2,13 +2,6 @@ resource "openstack_networking_secgroup_v2" "tnc" {
   name = "tnc"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "tnc_egress" {
-  direction              = "egress"
-  security_group_id = "${openstack_networking_secgroup_v2.tnc.id}"
-  remote_ip_prefix = "0.0.0.0/0"
-    ethertype = "IPv4"
-}
-
 resource "openstack_networking_secgroup_rule_v2" "tnc_http" {
   direction              = "ingress"
   security_group_id = "${openstack_networking_secgroup_v2.tnc.id}"
@@ -35,13 +28,6 @@ resource "openstack_networking_secgroup_v2" "api" {
   name = "api"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "api_egress" {
-  direction              = "egress"
-  security_group_id = "${openstack_networking_secgroup_v2.api.id}"
-  remote_ip_prefix = "0.0.0.0/0"
-    ethertype = "IPv4"
-}
-
 resource "openstack_networking_secgroup_rule_v2" "api_https" {
   direction              = "ingress"
   security_group_id = "${openstack_networking_secgroup_v2.api.id}"
@@ -55,13 +41,6 @@ resource "openstack_networking_secgroup_rule_v2" "api_https" {
 
 resource "openstack_networking_secgroup_v2" "console" {
   name = "console"
-}
-
-resource "openstack_networking_secgroup_rule_v2" "console_egress" {
-  direction              = "egress"
-  security_group_id = "${openstack_networking_secgroup_v2.console.id}"
-  remote_ip_prefix = "0.0.0.0/0"
-    ethertype = "IPv4"
 }
 
 resource "openstack_networking_secgroup_rule_v2" "console_http" {

@@ -13,17 +13,6 @@ resource "openstack_networking_secgroup_rule_v2" "master_tnc" {
   port_range_max     = 49500
 }
 
-resource "openstack_networking_secgroup_rule_v2" "master_egress" {
-  direction              = "egress"
-  security_group_id = "${openstack_networking_secgroup_v2.master.id}"
-
-  port_range_min   = 0
-  port_range_max     = 0
-  protocol    = "-1"
-  remote_ip_prefix = "0.0.0.0/0"
-    ethertype = "IPv4"
-}
-
 resource "openstack_networking_secgroup_rule_v2" "master_ingress_icmp" {
   direction              = "ingress"
   security_group_id = "${openstack_networking_secgroup_v2.master.id}"
