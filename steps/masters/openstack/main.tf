@@ -27,7 +27,6 @@ module "masters" {
   flavor_name                  = "${var.tectonic_openstack_master_flavor_name}"
   extra_tags                   = "${var.tectonic_openstack_extra_tags}"
   instance_count               = "${var.tectonic_bootstrap == "true" ? 1 : var.tectonic_master_count}"
-  master_iam_role              = "${var.tectonic_openstack_master_iam_role_name}"
   master_sg_ids                = "${concat(var.tectonic_openstack_master_extra_sg_ids, list(local.sg_id))}"
   private_endpoints            = "${local.private_endpoints}"
   public_endpoints             = "${local.public_endpoints}"
