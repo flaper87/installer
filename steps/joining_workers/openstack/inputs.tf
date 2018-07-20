@@ -1,4 +1,3 @@
-// This could be encapsulated as a data source
 data "terraform_remote_state" "topology" {
   backend = "local"
 
