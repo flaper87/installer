@@ -1,4 +1,5 @@
 variable "base_domain" {
+
   type        = "string"
   description = "Domain on which the Octavia records will be created"
 }
@@ -34,16 +35,10 @@ variable "instance_count" {
   type = "string"
 }
 
-variable "master_iam_role" {
-  type        = "string"
-  default     = ""
-  description = "IAM role to use for the instance profiles of master nodes."
-}
-
-variable "master_sg_ids" {
+variable "etcd_sg_ids" {
   type        = "list"
   default     = ["default"]
-  description = "The security group IDs to be applied to the master nodes."
+  description = "The security group IDs to be applied to the etcd nodes."
 }
 
 variable "private_endpoints" {
@@ -56,8 +51,8 @@ variable "public_endpoints" {
   default     = true
 }
 
-variable "aws_lbs" {
-  description = "List of aws_lb IDs for the Console & APIs"
+variable "openstack_lbs" {
+  description = "List of openstack_lb IDs for the Console & APIs"
   type        = "list"
   default     = []
 }
@@ -82,13 +77,8 @@ variable "ssh_key" {
   type = "string"
 }
 
-variable "network_name" {
-  type = "string"
-}
-
-variable "networks" {
+variable "subnet_ids" {
   type = "list"
-  default = []
 }
 
 variable "dns_server_ip" {
@@ -99,4 +89,8 @@ variable "dns_server_ip" {
 variable "kubeconfig_content" {
   type    = "string"
   default = ""
+}
+
+variable "user_data_ign" {
+  type = "string"
 }
