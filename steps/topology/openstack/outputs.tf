@@ -11,6 +11,15 @@ output "subnet_ids_masters" {
   value = ["151f6f63-ae72-4383-9c71-86571b7b1a98"]
 }
 
+# Etcd
+output "subnet_ids_etcd" {
+  value = ["151f6f63-ae72-4383-9c71-86571b7b1a98"]
+}
+
+output "etcd_sg_id" {
+  value = "default"
+}
+
 # Workers
 output "subnet_ids_workers" {
   value = ["151f6f63-ae72-4383-9c71-86571b7b1a98"]

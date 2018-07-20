@@ -11,10 +11,11 @@ data "ignition_config" "tnc" {
     # TODO: add verification
   }
 
-  # Used for loading certificates
-  append {
-    source = "${format("s3://%s/%s", var.s3_bucket, local.ignition_etcd_keys[count.index])}"
+  # TODO(shadower): use Swift or something else here?
+  ## Used for loading certificates
+  #append {
+  #  source = "${format("s3://%s/%s", var.s3_bucket, local.ignition_etcd_keys[count.index])}"
 
-    # TODO: add verification
-  }
+  #  # TODO: add verification
+  #}
 }
