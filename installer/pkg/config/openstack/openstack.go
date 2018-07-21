@@ -32,6 +32,7 @@ type OpenStack struct {
 	BaseImage                 string `json:"tectonic_openstack_base_image,omitempty" yaml:"baseImage,omitempty"`
 	VPCCIDRBlock              string `json:"tectonic_openstack_vpc_cidr_block,omitempty" yaml:"vpcCIDRBlock,omitempty"`
 	Worker                    `json:",inline" yaml:"worker,omitempty"`
+	Credentials               `json:",inline" yaml:"credentials,omitempty"`
 }
 
 // External converts external related config.
@@ -85,4 +86,30 @@ type WorkerRootVolume struct {
 	IOPS int    `json:"tectonic_openstack_worker_root_volume_iops,omitempty" yaml:"iops,omitempty"`
 	Size int    `json:"tectonic_openstack_worker_root_volume_size,omitempty" yaml:"size,omitempty"`
 	Type string `json:"tectonic_openstack_worker_root_volume_type,omitempty" yaml:"type,omitempty"`
+}
+
+
+type Credentials struct {
+    AuthUrl string `json:"tectonic_openstack_credentials_auth_url,omitempty" yaml:"authUrl,omitempty"`
+    Cloud  string `json:"tectonic_openstack_credentials_cloud,omitempty" yaml:"cloud,omitempty"`
+    Region string `json:"tectonic_openstack_credentials_region,omitempty" yaml:"region,omitempty"`
+    UserName string `json:"tectonic_openstack_credentials_auth_url,omitempty" yaml:"userName,omitempty"`
+    UserId string `json:"tectonic_openstack_credentials_user_id,omitempty" yaml:"userId,omitempty"`
+    TenantId string `json:"tectonic_openstack_credentials_tenant_id,omitempty" yaml:"tenantId,omitempty"`
+    TenantName string `json:"tectonic_openstack_credentials_tenant_name,omitempty" yaml:"tenantName,omitempty"`
+    Password string `json:"tectonic_openstack_credentials_password,omitempty" yaml:"password,omitempty"`
+    Token string `json:"tectonic_openstack_credentials_token,omitempty" yaml:"token,omitempty"`
+    UserDomainName string `json:"tectonic_openstack_credentials_user_domain_name,omitempty" yaml:"userDomainName,omitempty"`
+    UserDomainId string `json:"tectonic_openstack_credentials_user_domain_id,omitempty" yaml:"userDomainId,omitempty"`
+    ProjectDomainName string `json:"tectonic_openstack_credentials_project_domain_name,omitempty" yaml:"projectDomainName,omitempty"`
+    ProjectDomainId string `json:"tectonic_openstack_credentials_project_domain_id,omitempty" yaml:"projectDomainId,omitempty"`
+    DomainId string `json:"tectonic_openstack_credentials_domain_id,omitempty" yaml:"domainId,omitempty"`
+    DomainName string `json:"tectonic_openstack_credentials_domain_name,omitempty" yaml:"domainName,omitempty"`
+    Insecure bool `json:"tectonic_openstack_credentials_insecure,omitempty" yaml:"insecure,omitempty"`
+    CacertFile string `json:"tectonic_openstack_credentials_cacert_file,omitempty" yaml:"cacert_file,omitempty"`
+    Cert string `json:"tectonic_openstack_credentials_cert,omitempty" yaml:"cert,omitempty"`
+    Key string `json:"tectonic_openstack_credentials_key,omitempty" yaml:"key,omitempty"`
+    EndpointType string `json:"tectonic_openstack_credentials_endpoint_type,omitempty" yaml:"endpointType,omitempty"`
+    Swauth bool `json:"tectonic_openstack_credentials_swauth,omitempty" yaml:"swauth,omitempty"`
+    UseOctavia bool `json:"tectonic_openstack_credentials_use_octavia,omitempty" yaml:"useOctavia,omitempty"`
 }

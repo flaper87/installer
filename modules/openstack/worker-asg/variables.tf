@@ -1,5 +1,4 @@
 variable "base_domain" {
-
   type        = "string"
   description = "Domain on which the Octavia records will be created"
 }
@@ -49,6 +48,12 @@ variable "private_endpoints" {
 variable "public_endpoints" {
   description = "If set to true, public-facing ingress resources are created."
   default     = true
+}
+
+variable "openstack_lbs" {
+  description = "List of openstack_lb IDs for the Console & APIs"
+  type        = "list"
+  default     = []
 }
 
 variable "root_volume_iops" {
