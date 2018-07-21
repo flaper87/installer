@@ -1,5 +1,9 @@
-variable "base_domain" {
+variable "credentials" {
+  description = "Map with credentials"
+  type        = "map"
+}
 
+variable "base_domain" {
   type        = "string"
   description = "Domain on which the Octavia records will be created"
 }
@@ -35,10 +39,10 @@ variable "instance_count" {
   type = "string"
 }
 
-variable "etcd_sg_ids" {
+variable "master_sg_ids" {
   type        = "list"
   default     = ["default"]
-  description = "The security group IDs to be applied to the etcd nodes."
+  description = "The security group IDs to be applied to the master nodes."
 }
 
 variable "private_endpoints" {

@@ -1,5 +1,9 @@
-variable "base_domain" {
+variable "credentials" {
+  description = "Map with credentials"
+  type        = "map"
+}
 
+variable "base_domain" {
   type        = "string"
   description = "Domain on which the Octavia records will be created"
 }
@@ -35,10 +39,10 @@ variable "instance_count" {
   type = "string"
 }
 
-variable "worker_sg_ids" {
+variable "master_sg_ids" {
   type        = "list"
   default     = ["default"]
-  description = "The security group IDs to be applied to the worker nodes."
+  description = "The security group IDs to be applied to the master nodes."
 }
 
 variable "private_endpoints" {
@@ -49,6 +53,12 @@ variable "private_endpoints" {
 variable "public_endpoints" {
   description = "If set to true, public-facing ingress resources are created."
   default     = true
+}
+
+variable "openstack_lbs" {
+  description = "List of openstack_lb IDs for the Console & APIs"
+  type        = "list"
+  default     = []
 }
 
 variable "root_volume_iops" {

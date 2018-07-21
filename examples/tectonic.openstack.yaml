@@ -2,6 +2,11 @@ admin:
   email: "a@b.c"
   password: "verysecure"
 openstack:
+  credentials:
+    insecure: false
+
+    cloud:
+
   baseImage:
 
   etcd:
