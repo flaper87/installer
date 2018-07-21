@@ -1,7 +1,3 @@
-provider "openstack" {
-  cloud      = "rdo-cloud"
-}
-
 locals {
 }
 
