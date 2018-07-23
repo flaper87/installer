@@ -1,8 +1,3 @@
-variable "credentials" {
-  description = "Map with credentials"
-  type        = "map"
-}
-
 variable "base_domain" {
   type        = "string"
   description = "Domain on which the Octavia records will be created"
