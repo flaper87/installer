@@ -8,12 +8,12 @@ output "master_sg_id" {
 }
 
 output "subnet_ids_masters" {
-  value = ["151f6f63-ae72-4383-9c71-86571b7b1a98"]
+  value = "${module.vpc.master_subnet_ids}"
 }
 
 # Etcd
 output "subnet_ids_etcd" {
-  value = ["151f6f63-ae72-4383-9c71-86571b7b1a98"]
+  value = "${module.vpc.etcd_subnet_ids}"
 }
 
 output "etcd_sg_id" {
@@ -22,7 +22,7 @@ output "etcd_sg_id" {
 
 # Workers
 output "subnet_ids_workers" {
-  value = ["151f6f63-ae72-4383-9c71-86571b7b1a98"]
+  value = "${module.vpc.worker_subnet_ids}"
 }
 
 output "worker_sg_id" {

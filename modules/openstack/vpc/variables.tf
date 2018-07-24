@@ -18,6 +18,18 @@ variable "external_vpc_id" {
   type = "string"
 }
 
+variable "masters_count" {
+  type = "string"
+}
+
+variable "workers_count" {
+  type = "string"
+}
+
+variable "etcd_count" {
+  type = "string"
+}
+
 variable "external_master_subnet_ids" {
   type = "list"
 }

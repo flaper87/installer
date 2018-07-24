@@ -47,6 +47,10 @@ module "vpc" {
   cluster_name    = "${var.tectonic_cluster_name}"
   external_vpc_id = "${var.tectonic_openstack_external_vpc_id}"
 
+  masters_count   = "${var.tectonic_master_count}"
+  workers_count   = "${var.tectonic_worker_count}"
+  etcd_count      = "${var.tectonic_etcd_count}"
+
   external_master_subnet_ids = "${compact(var.tectonic_openstack_external_master_subnet_ids)}"
   external_worker_subnet_ids = "${compact(var.tectonic_openstack_external_worker_subnet_ids)}"
   extra_tags                 = "${var.tectonic_openstack_extra_tags}"
