@@ -47,7 +47,7 @@ resource "openstack_networking_port_v2" "workers" {
 }
 
 resource "openstack_networking_port_v2" "etcds" {
-  count              = "${var.workers_count}"
+  count              = "${var.etcd_count}"
   name               = "etcd-port-${count.index}"
   network_id         = "${openstack_networking_network_v2.openshift-private.id}"
   admin_state_up     = "true"
