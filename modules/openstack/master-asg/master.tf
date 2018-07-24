@@ -1,4 +1,9 @@
-locals {
+data "null_data_source" "networks" {
+  count = "${length(var.subnet_ids)}"
+
+  inputs = {
+    port = "${var.subnet_ids[count.index]}"
+  }
 }
 
 data "openstack_images_image_v2" "masters_img" {
@@ -24,7 +29,5 @@ resource "openstack_compute_instance_v2" "master_conf" {
       tectonicClusterID  = "${var.cluster_id}"
   }
 
-  network {
-    uuid = "${var.subnet_ids[0]}"
-  }
+  network = ["${data.null_data_source.networks.outputs}"]
 }

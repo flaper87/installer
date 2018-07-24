@@ -18,6 +18,18 @@ output "console_sg_id" {
   value = "${openstack_networking_secgroup_v2.console.id}"
 }
 
+output "master_subnet_ids" {
+  value = "${local.master_subnet_ids}"
+}
+
+output "worker_subnet_ids" {
+  value = "${local.worker_subnet_ids}"
+}
+
+output "etcd_subnet_ids" {
+  value = "${local.etcd_subnet_ids}"
+}
+
 /*
 # We have to do this join() & split() 'trick' because null_data_source and
 # the ternary operator can't output lists or maps
