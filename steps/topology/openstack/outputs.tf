@@ -29,6 +29,10 @@ output "worker_sg_id" {
   value = "default"
 }
 
+output "ignition_bootstrap" {
+  value = "${data.ignition_config.bootstrap.rendered}"
+}
+
 /*# Etcd
 output "etcd_sg_id" {
   value = "${module.vpc.etcd_sg_id}"

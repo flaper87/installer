@@ -13,3 +13,9 @@ output "openstack_lbs" {
 output "cluster_id" {
   value = "${var.cluster_id}"
 }
+
+output "user_data_ign" {
+  value = "${var.user_data_ign}"
+
+}
+

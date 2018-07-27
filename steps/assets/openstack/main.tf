@@ -1,7 +1,33 @@
 provider "openstack" {
   region  = "${var.tectonic_openstack_region}"
-  profile = "${var.tectonic_openstack_profile}"
-  version = "1.6.0"
+  version = ">=1.6.0"
+
+  auth_url = "${var.tectonic_openstack_credentials_auth_url}"
+  cloud = "${var.tectonic_openstack_credentials_cloud}"
+  region = "${var.tectonic_openstack_credentials_region}"
+  user_name = "${var.tectonic_openstack_credentials_user_name}"
+  user_id = "${var.tectonic_openstack_credentials_user_id}"
+  tenant_id = "${var.tectonic_openstack_credentials_tenant_id}"
+  tenant_name = "${var.tectonic_openstack_credentials_tenant_name}"
+  password = "${var.tectonic_openstack_credentials_password}"
+  token = "${var.tectonic_openstack_credentials_token}"
+  user_domain_name = "${var.tectonic_openstack_credentials_user_domain_name}"
+  user_domain_id = "${var.tectonic_openstack_credentials_user_domain_id}"
+  project_domain_name = "${var.tectonic_openstack_credentials_project_domain_name}"
+  project_domain_id = "${var.tectonic_openstack_credentials_project_domain_id}"
+  domain_id = "${var.tectonic_openstack_credentials_domain_id}"
+  domain_name = "${var.tectonic_openstack_credentials_domain_name}"
+  insecure = "${var.tectonic_openstack_credentials_insecure}"
+  cacert_file = "${var.tectonic_openstack_credentials_cacert_file}"
+  cert = "${var.tectonic_openstack_credentials_cert}"
+  key = "${var.tectonic_openstack_credentials_key}"
+  endpoint_type = "${var.tectonic_openstack_credentials_endpoint_type}"
+  swauth = "${var.tectonic_openstack_credentials_swauth}"
+  use_octavia = "${var.tectonic_openstack_credentials_use_octavia}"
+}
+
+data "openstack_compute_keypair_v2" "openstack_ssh_key" {
+  name = "${var.tectonic_openstack_ssh_key}"
 }
 
 # Terraform doesn't support "inheritance"
@@ -33,15 +59,15 @@ module assets_base {
   tectonic_versions                = "${var.tectonic_versions}"
 }
 
+data "ignition_user" "ssh_authorized_key" {
+    name = "core"
+    ssh_authorized_keys = ["${data.openstack_compute_keypair_v2.openstack_ssh_key.public_key}"]
+}
+
 # Removing assets is platform-specific
 # But it must be installed in /opt/tectonic/rm-assets.sh
 data "template_file" "rm_assets_sh" {
   template = "${file("${path.module}/resources/rm-assets.sh")}"
-
-  vars {
-    cluster_name       = "${var.tectonic_cluster_name}"
-    bucket_s3_location = "${var.tectonic_cluster_name}-tnc.${var.tectonic_base_domain}"
-  }
 }
 
 data "ignition_file" "rm_assets_sh" {
@@ -61,6 +87,10 @@ data "ignition_config" "bootstrap" {
     ),
     module.assets_base.ignition_bootstrap_files,
   ))}"]
+
+  users = [
+    "${data.ignition_user.ssh_authorized_key.id}"
+  ]
 
   systemd = [
     "${module.assets_base.ignition_bootstrap_systemd}",

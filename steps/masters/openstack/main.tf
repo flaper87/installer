@@ -5,7 +5,7 @@ locals {
 
 provider "openstack" {
   region  = "${var.tectonic_openstack_region}"
-  version = "1.6.0"
+  version = ">=1.6.0"
 }
 
 module "container_linux" {
@@ -58,5 +58,5 @@ module "masters" {
   root_volume_type             = "${var.tectonic_openstack_master_root_volume_type}"
   ssh_key                      = "${var.tectonic_openstack_ssh_key}"
   subnet_ids                   = "${local.subnet_ids}"
-  user_data_ign                = "${file("${path.cwd}/${var.tectonic_ignition_master}")}"
+  user_data_ign                = "${local.ignition_bootstrap}"
 }
