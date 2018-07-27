@@ -9,4 +9,5 @@ data "terraform_remote_state" "topology" {
 locals {
   subnet_ids = "${data.terraform_remote_state.topology.subnet_ids_workers}"
   sg_id      = "${data.terraform_remote_state.topology.worker_sg_id}"
+  ignition_bootstrap = "${data.terraform_remote_state.topology.ignition_bootstrap}"
 }

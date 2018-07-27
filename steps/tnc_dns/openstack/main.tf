@@ -1,7 +1,7 @@
 provider "openstack" {
   region  = "${var.tectonic_openstack_region}"
   profile = "${var.tectonic_openstack_profile}"
-  version = "1.6.0"
+  version = ">=1.6.0"
 }
 
 /*
