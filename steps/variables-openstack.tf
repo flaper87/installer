@@ -301,6 +301,16 @@ This should not overlap with any other networks, such as a private datacenter co
 EOF
 }
 
+variable "tectonic_openstack_external_network" {
+  type = "string"
+  description = <<EOF
+(optional) UUID of the external network. The network is used to provide
+Floating IP access to the deployed nodes.
+EOF
+
+  default = ""
+}
+
 variable "tectonic_openstack_external_vpc_id" {
   type = "string"
 

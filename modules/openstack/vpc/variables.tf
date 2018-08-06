@@ -44,6 +44,12 @@ variable "extra_tags" {
   default     = {}
 }
 
+variable "external_network" {
+  description = "UUID of the external network providing Floating IP addresses."
+  type        = "string"
+  default     = ""
+}
+
 variable "new_master_subnet_configs" {
   description = "{az_name = new_subnet_cidr}: Empty map means create new subnets in all availability zones in region with generated cidrs"
   type        = "map"
