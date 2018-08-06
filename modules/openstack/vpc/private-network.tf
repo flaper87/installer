@@ -57,3 +57,19 @@ resource "openstack_networking_port_v2" "etcds" {
     "subnet_id"  = "${openstack_networking_subnet_v2.workers.id}"
   }
 }
+
+resource "openstack_networking_router_v2" "openshift-external-router" {
+  name                = "openshift-external-router"
+  admin_state_up      = true
+  external_network_id = "${var.external_network}"
+}
+
+resource "openstack_networking_router_interface_v2" "masters_router_interface" {
+  router_id = "${openstack_networking_router_v2.openshift-external-router.id}"
+  subnet_id = "${openstack_networking_subnet_v2.masters.id}"
+}
+
+resource "openstack_networking_router_interface_v2" "workers_router_interface" {
+  router_id = "${openstack_networking_router_v2.openshift-external-router.id}"
+  subnet_id = "${openstack_networking_subnet_v2.workers.id}"
+}
