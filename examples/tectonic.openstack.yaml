@@ -104,6 +104,11 @@ openstack:
   # This should not overlap with any other networks, such as a private datacenter connected via Direct Connect.
   vpcCIDRBlock: 10.0.0.0/16
 
+  # (optional) UUID of the external network that provides Floating IPs. This
+  # will be set as the router's external gateway.
+  # Example: `6cb1187c-de56-43a9-b73f-098a175bba56`
+  #externalNetwork:
+
   worker:
     # (optional) This configures worker availability zones and their corresponding subnet CIDRs directly.
     #
