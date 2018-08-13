@@ -11,3 +11,8 @@ variable "cloud_provider" {
 variable "ingress_kind" {
   type = "string"
 }
+
+variable "api_internal_fqdn" {
+  type = "string"
+  default = ""
+}

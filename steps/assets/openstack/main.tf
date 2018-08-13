@@ -35,9 +35,16 @@ data "openstack_compute_keypair_v2" "openstack_ssh_key" {
 module assets_base {
   source = "../base"
 
-  cloud_provider = "openstack"
+  // We should uncomment this when
+  // we find a good way to write the
+  // cloud provider configs.
+  // cloud_provider_config = ""
+  // cloud_provider = "openstack"
+  cloud_provider = ""
   etcd_count     = "${var.tectonic_etcd_count}"
   ingress_kind   = "haproxy-router"
+
+  api_internal_fqdn     = "${module.vpc.master_port_ips[0]}"
 
   tectonic_admin_email             = "${var.tectonic_admin_email}"
   tectonic_admin_password          = "${var.tectonic_admin_password}"

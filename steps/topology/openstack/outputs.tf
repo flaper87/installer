@@ -8,12 +8,12 @@ output "master_sg_id" {
 }
 
 output "subnet_ids_masters" {
-  value = "${module.vpc.master_subnet_ids}"
+  value = "${data.terraform_remote_state.assets.subnet_ids_masters}"
 }
 
 # Etcd
 output "subnet_ids_etcd" {
-  value = "${module.vpc.etcd_subnet_ids}"
+  value = "${data.terraform_remote_state.assets.subnet_ids_etcd}"
 }
 
 output "etcd_sg_id" {
@@ -22,7 +22,7 @@ output "etcd_sg_id" {
 
 # Workers
 output "subnet_ids_workers" {
-  value = "${module.vpc.worker_subnet_ids}"
+  value = "${data.terraform_remote_state.assets.subnet_ids_workers}"
 }
 
 output "worker_sg_id" {
@@ -40,7 +40,7 @@ output "etcd_sg_id" {
 
 # Masters
 output "subnet_ids_masters" {
-  value = "${module.vpc.master_subnet_ids}"
+  value = "${data.terraform_remote_state.assets.master_subnet_id}"
 }
 
 output "aws_lbs" {

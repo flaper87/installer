@@ -30,6 +30,18 @@ output "etcd_subnet_ids" {
   value = "${local.etcd_subnet_ids}"
 }
 
+output "master_port_ips" {
+  value = "${local.master_port_ips}"
+}
+
+output "worker_port_ips" {
+  value = "${local.worker_port_ips}"
+}
+
+output "etcd_port_ips" {
+  value = "${local.etcd_port_ips}"
+}
+
 /*
 # We have to do this join() & split() 'trick' because null_data_source and
 # the ternary operator can't output lists or maps

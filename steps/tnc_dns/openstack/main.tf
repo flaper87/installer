@@ -1,9 +1,7 @@
 provider "openstack" {
   region  = "${var.tectonic_openstack_region}"
-  profile = "${var.tectonic_openstack_profile}"
   version = ">=1.6.0"
 }
-
 /*
 resource "openstack_route53_record" "tectonic_tnc_cname" {
   count   = "${var.tectonic_bootstrap == "true" ? 1 : 0}"
