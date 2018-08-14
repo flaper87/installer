@@ -16,7 +16,7 @@ module "container_linux" {
 }
 
 module "workers" {
-  source = "../../../modules/openstack/worker-asg"
+  source = "../../../modules/openstack/workers"
 
   auth_url = "${var.tectonic_openstack_credentials_auth_url}"
   cloud = "${var.tectonic_openstack_credentials_cloud}"
