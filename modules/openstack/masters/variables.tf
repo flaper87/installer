@@ -16,28 +16,44 @@ variable "cluster_name" {
 }
 
 variable "container_images" {
-  description = "Container images to use"
   type        = "map"
+  description = "Container images to use"
+}
+
+variable "dns_server_ip" {
+  type    = "string"
+  default = ""
+}
+
+variable "extra_tags" {
+  type        = "map"
+  description = "Extra AWS tags to be applied to created resources."
+  default     = {}
 }
 
 variable "flavor_name" {
   type = "string"
 }
 
-variable "extra_tags" {
-  description = "Extra AWS tags to be applied to created resources."
-  type        = "map"
-  default     = {}
-}
-
 variable "instance_count" {
   type = "string"
+}
+
+variable "kubeconfig_content" {
+  type    = "string"
+  default = ""
 }
 
 variable "master_sg_ids" {
   type        = "list"
   default     = ["default"]
   description = "The security group IDs to be applied to the master nodes."
+}
+
+variable "openstack_lbs" {
+  type        = "list"
+  description = "List of openstack_lb IDs for the Console & APIs"
+  default     = []
 }
 
 variable "private_endpoints" {
@@ -48,12 +64,6 @@ variable "private_endpoints" {
 variable "public_endpoints" {
   description = "If set to true, public-facing ingress resources are created."
   default     = true
-}
-
-variable "openstack_lbs" {
-  description = "List of openstack_lb IDs for the Console & APIs"
-  type        = "list"
-  default     = []
 }
 
 variable "root_volume_iops" {
@@ -78,16 +88,6 @@ variable "ssh_key" {
 
 variable "subnet_ids" {
   type = "list"
-}
-
-variable "dns_server_ip" {
-  type    = "string"
-  default = ""
-}
-
-variable "kubeconfig_content" {
-  type    = "string"
-  default = ""
 }
 
 variable "user_data_ign" {
