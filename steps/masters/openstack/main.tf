@@ -16,7 +16,7 @@ module "container_linux" {
 }
 
 module "masters" {
-  source = "../../../modules/openstack/master-asg"
+  source = "../../../modules/openstack/masters"
 
   auth_url = "${var.tectonic_openstack_credentials_auth_url}"
   cloud = "${var.tectonic_openstack_credentials_cloud}"
