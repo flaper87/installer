@@ -1,9 +1,3 @@
-provider "openstack" {
-  profile = "${var.tectonic_openstack_profile}"
-  region  = "${var.tectonic_openstack_region}"
-  version = ">=1.6.0"
-}
-
 /*
 resource "openstack_route53_record" "tectonic_tnc_cname" {
   name    = "${var.tectonic_cluster_name}-tnc.${var.tectonic_base_domain}"
