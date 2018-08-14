@@ -3,7 +3,7 @@ output "cluster_id" {
 }
 
 output "openstack_compute_instance_v2" {
-  value = "${openstack_compute_instance_v2.etcd_conf.*.id}"
+  value = "${openstack_compute_instance_v2.master_conf.*.id}"
 }
 
 output "openstack_lbs" {
@@ -12,4 +12,8 @@ output "openstack_lbs" {
 
 output "subnet_ids" {
   value = "${var.subnet_ids}"
+}
+
+output "user_data_ign" {
+  value = "${var.user_data_ign}"
 }
