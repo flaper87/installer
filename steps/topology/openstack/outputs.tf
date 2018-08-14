@@ -1,36 +1,34 @@
 // Mock values for now
-output "openstack_lbs" {
-  value = []
+output "etcd_sg_id" {
+  value = "default"
+}
+
+output "ignition_bootstrap" {
+  value = "${data.ignition_config.bootstrap.rendered}"
 }
 
 output "master_sg_id" {
   value = "default"
 }
 
+output "openstack_lbs" {
+  value = []
+}
+
 output "subnet_ids_masters" {
   value = "${module.vpc.master_subnet_ids}"
 }
 
-# Etcd
 output "subnet_ids_etcd" {
   value = "${module.vpc.etcd_subnet_ids}"
 }
 
-output "etcd_sg_id" {
-  value = "default"
-}
-
-# Workers
 output "subnet_ids_workers" {
   value = "${module.vpc.worker_subnet_ids}"
 }
 
 output "worker_sg_id" {
   value = "default"
-}
-
-output "ignition_bootstrap" {
-  value = "${data.ignition_config.bootstrap.rendered}"
 }
 
 /*# Etcd
@@ -76,3 +74,4 @@ output "tnc_elb_zone_id" {
 output "tnc_s3_bucket_domain_name" {
   value = "${aws_s3_bucket.tectonic.bucket_domain_name}"
 }*/
+

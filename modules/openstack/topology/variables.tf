@@ -1,3 +1,7 @@
+variable "base_domain" {
+  type = "string"
+}
+
 variable "cidr_block" {
   type = "string"
 }
@@ -6,24 +10,13 @@ variable "cluster_id" {
   type = "string"
 }
 
-variable "base_domain" {
-  type = "string"
-}
-
 variable "cluster_name" {
   type = "string"
 }
 
-variable "external_vpc_id" {
-  type = "string"
-}
-
-variable "masters_count" {
-  type = "string"
-}
-
-variable "workers_count" {
-  type = "string"
+variable "depends_on" {
+  default = []
+  type    = "list"
 }
 
 variable "etcd_count" {
@@ -32,6 +25,16 @@ variable "etcd_count" {
 
 variable "external_master_subnet_ids" {
   type = "list"
+}
+
+variable "external_network" {
+  description = "UUID of the external network providing Floating IP addresses."
+  type        = "string"
+  default     = ""
+}
+
+variable "external_vpc_id" {
+  type = "string"
 }
 
 variable "external_worker_subnet_ids" {
@@ -44,10 +47,8 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "external_network" {
-  description = "UUID of the external network providing Floating IP addresses."
-  type        = "string"
-  default     = ""
+variable "masters_count" {
+  type = "string"
 }
 
 variable "new_master_subnet_configs" {
@@ -70,7 +71,6 @@ variable "public_master_endpoints" {
   default     = true
 }
 
-variable "depends_on" {
-  default = []
-  type    = "list"
+variable "workers_count" {
+  type = "string"
 }
