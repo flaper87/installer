@@ -38,7 +38,7 @@ module "container_linux" {
 }
 
 module "vpc" {
-  source = "../../../modules/openstack/vpc"
+  source = "../../../modules/openstack/topology"
 
   auth_url                   = "${var.tectonic_openstack_credentials_auth_url}"
   base_domain                = "${var.tectonic_base_domain}"
