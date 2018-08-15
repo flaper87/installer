@@ -39,6 +39,10 @@ variable "instance_count" {
   type = "string"
 }
 
+variable "key_pair" {
+  type = "string"
+}
+
 variable "kubeconfig_content" {
   type    = "string"
   default = ""
@@ -80,10 +84,6 @@ variable "root_volume_size" {
 variable "root_volume_type" {
   type        = "string"
   description = "The type of volume for the root block device."
-}
-
-variable "ssh_key" {
-  type = "string"
 }
 
 variable "subnet_ids" {

@@ -25,10 +25,10 @@ type OpenStack struct {
 	External        `json:",inline" yaml:"external,omitempty"`
 	ExtraTags       map[string]string `json:"tectonic_openstack_extra_tags,omitempty" yaml:"extraTags,omitempty"`
 	InstallerRole   string            `json:"tectonic_openstack_installer_role,omitempty" yaml:"installerRole,omitempty"`
+	KeyPair         string            `json:"tectonic_openstack_key_pair,omitempty" yaml:"keyPair,omitempty"`
 	Master          `json:",inline" yaml:"master,omitempty"`
 	Profile         string `json:"tectonic_openstack_profile,omitempty" yaml:"profile,omitempty"`
 	Region          string `json:"tectonic_openstack_region,omitempty" yaml:"region,omitempty"`
-	SSHKey          string `json:"tectonic_openstack_ssh_key,omitempty" yaml:"sshKey,omitempty"`
 	BaseImage       string `json:"tectonic_openstack_base_image,omitempty" yaml:"baseImage,omitempty"`
 	VPCCIDRBlock    string `json:"tectonic_openstack_vpc_cidr_block,omitempty" yaml:"vpcCIDRBlock,omitempty"`
 	ExternalNetwork string `json:"tectonic_openstack_external_network,omitempty" yaml:"externalNetwork,omitempty"`

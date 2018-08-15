@@ -25,8 +25,8 @@ provider "openstack" {
   version             = ">=1.6.0"
 }
 
-data "openstack_compute_keypair_v2" "openstack_ssh_key" {
-  name = "${var.tectonic_openstack_ssh_key}"
+data "openstack_compute_keypair_v2" "openstack_key_pair" {
+  name = "${var.tectonic_openstack_key_pair}"
 }
 
 # Terraform doesn't support "inheritance"
@@ -60,7 +60,7 @@ module assets_base {
 
 data "ignition_user" "ssh_authorized_key" {
   name                = "core"
-  ssh_authorized_keys = ["${data.openstack_compute_keypair_v2.openstack_ssh_key.public_key}"]
+  ssh_authorized_keys = ["${data.openstack_compute_keypair_v2.openstack_key_pair.public_key}"]
 }
 
 # Removing assets is platform-specific

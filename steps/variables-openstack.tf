@@ -382,6 +382,11 @@ Example:
 EOF
 }
 
+variable "tectonic_openstack_key_pair" {
+  type        = "string"
+  description = "Name of an SSH key pair available to the OpenStack project. Example: coreos-user."
+}
+
 variable "tectonic_openstack_master_custom_subnets" {
   type    = "map"
   default = {}
@@ -469,11 +474,6 @@ EOF
 variable "tectonic_openstack_region" {
   type        = "string"
   description = "The target AWS region for the cluster."
-}
-
-variable "tectonic_openstack_ssh_key" {
-  type        = "string"
-  description = "Name of an SSH key located within the AWS region. Example: coreos-user."
 }
 
 variable "tectonic_openstack_vpc_cidr_block" {
