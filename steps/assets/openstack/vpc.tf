@@ -41,6 +41,7 @@ module "vpc" {
 
   external_master_subnet_ids = "${compact(var.tectonic_openstack_external_master_subnet_ids)}"
   external_worker_subnet_ids = "${compact(var.tectonic_openstack_external_worker_subnet_ids)}"
+  external_network           = "${var.tectonic_openstack_external_network}"
   extra_tags                 = "${var.tectonic_openstack_extra_tags}"
 
   // empty map subnet_configs will have the vpc module creating subnets in all availabile AZs
