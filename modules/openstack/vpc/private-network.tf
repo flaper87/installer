@@ -12,6 +12,14 @@ resource "openstack_networking_subnet_v2" "masters" {
   name       = "masters"
   network_id = "${openstack_networking_network_v2.openshift-private.id}"
   cidr       = "${local.new_master_cidr_range}"
+  gateway_ip = "${cidrhost(local.new_master_cidr_range, 2)}"
+  allocation_pools = [{
+    # NOTE(shadower): this must start at `3` because the first address is
+    # expected to be the IP of the API endpoint (i.e. the load balancer) and
+    # the second one is the gateway (which must be outside the pool).
+    start = "${cidrhost(local.new_master_cidr_range, 3)}"
+    end = "${cidrhost(local.new_master_cidr_range, -2)}"
+  }]
   ip_version = 4
 }
 

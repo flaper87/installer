@@ -1,4 +1,6 @@
 locals {
+  # NOTE(shadower): this must be the first address of the service block,
+  # because that's what the TLS certificate uses in `tls.go`:
   new_master_lb_ip    = "${cidrhost(var.cidr_block, 1)}"
 }
 
