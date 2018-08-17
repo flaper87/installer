@@ -27,6 +27,10 @@
   "tectonic_networking": "canal",
   "tectonic_service_cidr": "10.3.0.0/16",
   "tectonic_cluster_cidr": "10.2.0.0/16",
+  "tectonic_openstack_endpoints": "all",
+  "tectonic_openstack_profile": "default",
+  "tectonic_openstack_region": "RegionOne",
+  "tectonic_openstack_vpc_cidr_block": "10.0.0.0/16",
   "tectonic_platform": "aws",
   "tectonic_pull_secret": "{\"auths\": {}}",
   "tectonic_worker_count": 3
