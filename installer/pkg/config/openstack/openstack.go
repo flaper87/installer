@@ -93,7 +93,7 @@ type Credentials struct {
 	AuthUrl           string `json:"tectonic_openstack_credentials_auth_url,omitempty" yaml:"authUrl,omitempty"`
 	Cloud             string `json:"tectonic_openstack_credentials_cloud,omitempty" yaml:"cloud,omitempty"`
 	Region            string `json:"tectonic_openstack_credentials_region,omitempty" yaml:"region,omitempty"`
-	UserName          string `json:"tectonic_openstack_credentials_auth_url,omitempty" yaml:"userName,omitempty"`
+	UserName          string `json:"tectonic_openstack_credentials_user_name,omitempty" yaml:"userName,omitempty"`
 	UserId            string `json:"tectonic_openstack_credentials_user_id,omitempty" yaml:"userId,omitempty"`
 	TenantId          string `json:"tectonic_openstack_credentials_tenant_id,omitempty" yaml:"tenantId,omitempty"`
 	TenantName        string `json:"tectonic_openstack_credentials_tenant_name,omitempty" yaml:"tenantName,omitempty"`
