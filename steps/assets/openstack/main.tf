@@ -44,7 +44,7 @@ module assets_base {
   etcd_count     = "${var.tectonic_etcd_count}"
   ingress_kind   = "haproxy-router"
 
-  api_internal_fqdn     = "${module.vpc.master_port_ips[0]}"
+  api_internal_fqdn     = "${module.vpc.master_internal_lb_ip}"
 
   tectonic_admin_email             = "${var.tectonic_admin_email}"
   tectonic_admin_password          = "${var.tectonic_admin_password}"

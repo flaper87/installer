@@ -42,6 +42,10 @@ output "etcd_port_ips" {
   value = "${local.etcd_port_ips}"
 }
 
+output "master_internal_lb_ip" {
+  value = "${local.new_master_lb_ip}"
+}
+
 /*
 # We have to do this join() & split() 'trick' because null_data_source and
 # the ternary operator can't output lists or maps
