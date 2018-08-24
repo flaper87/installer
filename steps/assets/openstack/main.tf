@@ -34,7 +34,12 @@ data "openstack_compute_keypair_v2" "openstack_key_pair" {
 module assets_base {
   source = "../base"
 
-  cloud_provider = "openstack"
+  // We should uncomment this when
+  // we find a good way to write the
+  // cloud provider configs.
+  // cloud_provider_config = ""
+  // cloud_provider = "openstack"
+  cloud_provider = ""
   etcd_count     = "${var.tectonic_etcd_count}"
   ingress_kind   = "haproxy-router"
 
