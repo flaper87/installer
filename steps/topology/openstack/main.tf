@@ -51,7 +51,6 @@ module "vpc" {
   domain_id                  = "${var.tectonic_openstack_credentials_domain_id}"
   domain_name                = "${var.tectonic_openstack_credentials_domain_name}"
   endpoint_type              = "${var.tectonic_openstack_credentials_endpoint_type}"
-  etcd_count                 = "${var.tectonic_etcd_count}"
   external_master_subnet_ids = "${compact(var.tectonic_openstack_external_master_subnet_ids)}"
   external_network           = "${var.tectonic_openstack_external_network}"
   external_vpc_id            = "${var.tectonic_openstack_external_vpc_id}"

@@ -19,10 +19,6 @@ variable "depends_on" {
   type    = "list"
 }
 
-variable "etcd_count" {
-  type = "string"
-}
-
 variable "external_master_subnet_ids" {
   type = "list"
 }

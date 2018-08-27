@@ -40,7 +40,6 @@ module assets_base {
   // cloud_provider_config = ""
   // cloud_provider = "openstack"
   cloud_provider = ""
-  etcd_count     = "${var.tectonic_etcd_count}"
   ingress_kind   = "haproxy-router"
 
   tectonic_admin_email             = "${var.tectonic_admin_email}"
