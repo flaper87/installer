@@ -3,10 +3,6 @@ output "etcd_sg_id" {
   value = "default"
 }
 
-output "ignition_bootstrap" {
-  value = "${data.ignition_config.bootstrap.rendered}"
-}
-
 output "master_sg_id" {
   value = "default"
 }
@@ -29,6 +25,10 @@ output "subnet_ids_workers" {
 
 output "worker_sg_id" {
   value = "default"
+}
+
+output "swift_container" {
+  value = "${openstack_objectstorage_container_v1.tectonic.name}"
 }
 
 /*# Etcd

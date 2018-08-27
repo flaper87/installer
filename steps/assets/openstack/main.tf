@@ -67,35 +67,8 @@ data "ignition_user" "ssh_authorized_key" {
   ssh_authorized_keys = ["${data.openstack_compute_keypair_v2.openstack_key_pair.public_key}"]
 }
 
-# Removing assets is platform-specific
-# But it must be installed in /opt/tectonic/rm-assets.sh
-data "template_file" "rm_assets_sh" {
-  template = "${file("${path.module}/resources/rm-assets.sh")}"
-}
-
-data "ignition_file" "rm_assets_sh" {
-  filesystem = "root"
-  path       = "/opt/tectonic/rm-assets.sh"
-  mode       = "0700"
-
-  content {
-    content = "${data.template_file.rm_assets_sh.rendered}"
-  }
-}
-
 data "ignition_config" "bootstrap" {
-  files = ["${flatten(list(
-    list(
-      data.ignition_file.rm_assets_sh.id,
-    ),
-    module.assets_base.ignition_bootstrap_files,
-  ))}"]
-
   users = [
     "${data.ignition_user.ssh_authorized_key.id}",
-  ]
-
-  systemd = [
-    "${module.assets_base.ignition_bootstrap_systemd}",
   ]
 }

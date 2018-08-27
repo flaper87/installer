@@ -13,7 +13,3 @@ output "openstack_lbs" {
 output "subnet_ids" {
   value = "${var.subnet_ids}"
 }
-
-output "user_data_ign" {
-  value = "${var.user_data_ign}"
-}

@@ -133,7 +133,7 @@ func (c *Cluster) validateOpenStack() []error {
 	if c.Platform != PlatformOpenStack {
 		return errs
 	}
-    return errs
+	return errs
 }
 
 // validateCL validates all fields specific to Container Linux.

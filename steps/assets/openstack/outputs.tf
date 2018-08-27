@@ -1,3 +1,3 @@
 output "ignition_bootstrap" {
-  value = "${data.ignition_config.bootstrap.rendered}"
+  value = "${module.assets_base.ignition_bootstrap}"
 }

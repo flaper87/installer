@@ -8,8 +8,8 @@ import (
 	"gopkg.in/yaml.v2"
 
 	"github.com/openshift/installer/installer/pkg/config/aws"
-	"github.com/openshift/installer/installer/pkg/config/openstack"
 	"github.com/openshift/installer/installer/pkg/config/libvirt"
+	"github.com/openshift/installer/installer/pkg/config/openstack"
 )
 
 const (
@@ -82,24 +82,24 @@ var defaultCluster = Cluster{
 
 // Cluster defines the config for a cluster.
 type Cluster struct {
-	Admin           `json:",inline" yaml:"admin,omitempty"`
-	aws.AWS         `json:",inline" yaml:"aws,omitempty"`
-	BaseDomain      string `json:"tectonic_base_domain,omitempty" yaml:"baseDomain,omitempty"`
-	CA              `json:",inline" yaml:"CA,omitempty"`
-	ContainerLinux  `json:",inline" yaml:"containerLinux,omitempty"`
-	IgnitionMasters []string `json:"tectonic_ignition_masters,omitempty" yaml:"-"`
-	IgnitionWorker  string   `json:"tectonic_ignition_worker,omitempty" yaml:"-"`
-	Internal        `json:",inline" yaml:"-"`
-	libvirt.Libvirt `json:",inline" yaml:"libvirt,omitempty"`
-	Master          `json:",inline" yaml:"master,omitempty"`
-	Name            string `json:"tectonic_cluster_name,omitempty" yaml:"name,omitempty"`
-	Networking      `json:",inline" yaml:"networking,omitempty"`
-	NodePools       `json:"-" yaml:"nodePools"`
+	Admin               `json:",inline" yaml:"admin,omitempty"`
+	aws.AWS             `json:",inline" yaml:"aws,omitempty"`
+	BaseDomain          string `json:"tectonic_base_domain,omitempty" yaml:"baseDomain,omitempty"`
+	CA                  `json:",inline" yaml:"CA,omitempty"`
+	ContainerLinux      `json:",inline" yaml:"containerLinux,omitempty"`
+	IgnitionMasters     []string `json:"tectonic_ignition_masters,omitempty" yaml:"-"`
+	IgnitionWorker      string   `json:"tectonic_ignition_worker,omitempty" yaml:"-"`
+	Internal            `json:",inline" yaml:"-"`
+	libvirt.Libvirt     `json:",inline" yaml:"libvirt,omitempty"`
+	Master              `json:",inline" yaml:"master,omitempty"`
+	Name                string `json:"tectonic_cluster_name,omitempty" yaml:"name,omitempty"`
+	Networking          `json:",inline" yaml:"networking,omitempty"`
+	NodePools           `json:"-" yaml:"nodePools"`
 	openstack.OpenStack `json:",inline" yaml:"openstack,omitempty"`
-	Platform        Platform `json:"tectonic_platform" yaml:"platform,omitempty"`
-	PullSecret      string   `json:"tectonic_pull_secret,omitempty" yaml:"pullSecret,omitempty"`
-	PullSecretPath  string   `json:"-" yaml:"pullSecretPath,omitempty"` // Deprecated: remove after openshift/release is ported to pullSecret
-	Worker          `json:",inline" yaml:"worker,omitempty"`
+	Platform            Platform `json:"tectonic_platform" yaml:"platform,omitempty"`
+	PullSecret          string   `json:"tectonic_pull_secret,omitempty" yaml:"pullSecret,omitempty"`
+	PullSecretPath      string   `json:"-" yaml:"pullSecretPath,omitempty"` // Deprecated: remove after openshift/release is ported to pullSecret
+	Worker              `json:",inline" yaml:"worker,omitempty"`
 }
 
 // NodeCount will return the number of nodes specified in NodePools with matching names.
