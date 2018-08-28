@@ -21,7 +21,6 @@ resource "openstack_compute_instance_v2" "worker_conf" {
 
   flavor_id       = "${data.openstack_compute_flavor_v2.workers_flavor.id}"
   image_id        = "${data.openstack_images_image_v2.workers_img.id}"
-  key_pair        = "${var.key_pair}"
   network         = ["${data.null_data_source.networks.outputs}"]
   security_groups = ["${var.worker_sg_ids}"]
   user_data       = "${var.user_data_ign}"

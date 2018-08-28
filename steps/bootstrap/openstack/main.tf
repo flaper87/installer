@@ -35,8 +35,9 @@ resource "openstack_objectstorage_object_v1" "ignition_bootstrap" {
   #container_name = "${openstack_objectstorage_container_v1.tectonic.name}"
   container_name = "${local.swift_container}"
   name           = "config/master"
+
   #content        = "${data.ignition_config.bootstrap_redirect.rendered}"
-  content        = "${local.ignition_bootstrap}"
+  content = "${local.ignition_bootstrap}"
 
   metadata = "${merge(map(
       "Name", "${var.tectonic_cluster_name}-ignition-master",

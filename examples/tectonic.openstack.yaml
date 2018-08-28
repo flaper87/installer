@@ -1,6 +1,7 @@
 admin:
   email: "a@b.c"
   password: "verysecure"
+  sshKey: "ssh-ed25519 AAAA..."
 openstack:
   credentials:
     insecure: false
@@ -48,9 +49,6 @@ openstack:
   # Example:
   #  * Role ARN  = arn:aws:iam::123456789012:role/tectonic-installer
   # installerRole:
-
-  # Name of an SSH key pair available to the OpenStack project. Example: coreos-user.
-  keyPair:
 
   master:
     # (optional) This configures master availability zones and their corresponding subnet CIDRs directly.

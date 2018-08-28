@@ -25,10 +25,6 @@ provider "openstack" {
   version             = ">=1.6.0"
 }
 
-data "openstack_compute_keypair_v2" "openstack_key_pair" {
-  name = "${var.tectonic_openstack_key_pair}"
-}
-
 # Terraform doesn't support "inheritance"
 # So we have to pass all variables down
 module assets_base {
@@ -40,10 +36,12 @@ module assets_base {
   // cloud_provider_config = ""
   // cloud_provider = "openstack"
   cloud_provider = ""
-  ingress_kind   = "haproxy-router"
+
+  ingress_kind = "haproxy-router"
 
   tectonic_admin_email             = "${var.tectonic_admin_email}"
   tectonic_admin_password          = "${var.tectonic_admin_password}"
+  tectonic_admin_ssh_key           = "${var.tectonic_admin_ssh_key}"
   tectonic_base_domain             = "${var.tectonic_base_domain}"
   tectonic_cluster_cidr            = "${var.tectonic_cluster_cidr}"
   tectonic_cluster_id              = "${var.tectonic_cluster_id}"
@@ -60,15 +58,4 @@ module assets_base {
   tectonic_service_cidr            = "${var.tectonic_service_cidr}"
   tectonic_update_channel          = "${var.tectonic_update_channel}"
   tectonic_versions                = "${var.tectonic_versions}"
-}
-
-data "ignition_user" "ssh_authorized_key" {
-  name                = "core"
-  ssh_authorized_keys = ["${data.openstack_compute_keypair_v2.openstack_key_pair.public_key}"]
-}
-
-data "ignition_config" "bootstrap" {
-  users = [
-    "${data.ignition_user.ssh_authorized_key.id}",
-  ]
 }

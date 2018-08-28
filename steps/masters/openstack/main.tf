@@ -35,7 +35,6 @@ module "masters" {
   insecure            = "${var.tectonic_openstack_credentials_insecure}"
   instance_count      = "${var.tectonic_master_count}"
   key                 = "${var.tectonic_openstack_credentials_key}"
-  key_pair            = "${var.tectonic_openstack_key_pair}"
   master_sg_ids       = "${concat(var.tectonic_openstack_master_extra_sg_ids, list(local.sg_id))}"
   openstack_lbs       = "${local.openstack_lbs}"
   password            = "${var.tectonic_openstack_credentials_password}"

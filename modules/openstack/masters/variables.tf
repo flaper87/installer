@@ -39,10 +39,6 @@ variable "instance_count" {
   type = "string"
 }
 
-variable "key_pair" {
-  type = "string"
-}
-
 variable "kubeconfig_content" {
   type    = "string"
   default = ""
