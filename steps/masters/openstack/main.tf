@@ -53,7 +53,7 @@ module "masters" {
   tenant_name         = "${var.tectonic_openstack_credentials_tenant_name}"
   token               = "${var.tectonic_openstack_credentials_token}"
   use_octavia         = "${var.tectonic_openstack_credentials_use_octavia}"
-  user_data_igns      = "${var.tectonic_ignition_masters}"
+  user_data_ign       = "${local.ignition_bootstrap}"
   user_domain_id      = "${var.tectonic_openstack_credentials_user_domain_id}"
   user_domain_name    = "${var.tectonic_openstack_credentials_user_domain_name}"
   user_id             = "${var.tectonic_openstack_credentials_user_id}"
