@@ -35,6 +35,18 @@ resource "openstack_networking_port_v2" "masters" {
   }
 }
 
+resource "openstack_networking_port_v2" "bootstrap_port" {
+  name = "bootstrap-port"
+
+  admin_state_up     = "true"
+  network_id         = "${openstack_networking_network_v2.openshift-private.id}"
+  security_group_ids = ["${openstack_networking_secgroup_v2.master.id}"]
+
+  fixed_ip {
+    "subnet_id" = "${openstack_networking_subnet_v2.masters.id}"
+  }
+}
+
 resource "openstack_networking_port_v2" "workers" {
   name  = "worker-port-${count.index}"
   count = "${var.workers_count}"

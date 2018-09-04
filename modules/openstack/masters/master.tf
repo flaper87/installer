@@ -23,7 +23,7 @@ resource "openstack_compute_instance_v2" "master_conf" {
   image_id        = "${data.openstack_images_image_v2.masters_img.id}"
   network         = ["${data.null_data_source.networks.outputs}"]
   security_groups = ["${var.master_sg_ids}"]
-  user_data       = "${var.user_data_ign}"
+  user_data       = "${file(format("%s/%s", path.cwd, var.user_data_igns[count.index]))}"
 
   metadata {
     Name              = "${var.cluster_name}-master"

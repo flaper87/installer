@@ -31,6 +31,10 @@ output "swift_container" {
   value = "${openstack_objectstorage_container_v1.tectonic.name}"
 }
 
+output "bootstrap_port_id" {
+  value = "${module.vpc.bootstrap_port_id}"
+}
+
 /*# Etcd
 output "etcd_sg_id" {
   value = "${module.vpc.etcd_sg_id}"

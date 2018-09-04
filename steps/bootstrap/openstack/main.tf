@@ -32,11 +32,9 @@ provider "openstack" {
 
 # The public ignition object.
 resource "openstack_objectstorage_object_v1" "ignition_bootstrap" {
-  #container_name = "${openstack_objectstorage_container_v1.tectonic.name}"
   container_name = "${local.swift_container}"
-  name           = "config/master"
+  name           = "bootstrap.ign"
 
-  #content        = "${data.ignition_config.bootstrap_redirect.rendered}"
   content = "${local.ignition_bootstrap}"
 
   metadata = "${merge(map(
@@ -46,38 +44,50 @@ resource "openstack_objectstorage_object_v1" "ignition_bootstrap" {
     ), var.tectonic_openstack_extra_tags)}"
 }
 
-resource "openstack_objectstorage_object_v1" "bootstrap" {
-  name = "config/bootstrap"
-
-  #container_name = "${openstack_objectstorage_container_v1.tectonic.name}"
-  container_name = "${local.swift_container}"
-  content        = "${local.ignition_bootstrap}"
-  content_type   = "application/json"
-
-  metadata = "${merge(map(
-      "Name", "${var.tectonic_cluster_name}-ignition-master",
-      "KubernetesCluster", "${var.tectonic_cluster_name}",
-      "tectonicClusterID", "${var.tectonic_cluster_id}"
-    ), var.tectonic_openstack_extra_tags)}"
-}
-
 resource "openstack_objectstorage_tempurl_v1" "bootstrap_tmpurl" {
-  #container = "${openstack_objectstorage_container_v1.tectonic.name}"
   container = "${local.swift_container}"
   method    = "get"
-  object    = "${openstack_objectstorage_object_v1.bootstrap.name}"
+  object    = "${openstack_objectstorage_object_v1.ignition_bootstrap.name}"
   ttl       = 3600
 }
 
 # The public ignition configuration
 data "ignition_config" "bootstrap_redirect" {
   replace {
-    source = "swift://${local.swift_container}}/config/bootstrap"
+    source = "${openstack_objectstorage_tempurl_v1.bootstrap_tmpurl.url}"
   }
 }
 
-data "ignition_config" "bootstrap" {
-  replace {
-    source = "${openstack_objectstorage_tempurl_v1.bootstrap_tmpurl.url}"
+data "openstack_images_image_v2" "bootstrap_image" {
+  name        = "${var.tectonic_openstack_base_image}"
+  most_recent = true
+}
+
+data "openstack_compute_flavor_v2" "bootstrap_flavor" {
+  name = "${var.tectonic_openstack_master_flavor_name}"
+}
+
+resource "openstack_compute_instance_v2" "bootstrap" {
+  name = "${var.tectonic_cluster_name}-bootstrap"
+
+  flavor_id = "${data.openstack_compute_flavor_v2.bootstrap_flavor.id}"
+  image_id  = "${data.openstack_images_image_v2.bootstrap_image.id}"
+
+  # NOTE(shadower): according to the terraform docs, we should not set a SG here
+  # if we plan to attach a port (which we do). Instead, we should set the security
+  # groups on the port.
+  # https://www.terraform.io/docs/providers/openstack/r/compute_instance_v2.html#security_groups
+  #security_groups = ["default"]
+  user_data = "${data.ignition_config.bootstrap_redirect.rendered}"
+
+  network {
+    port = "${local.bootstrap_port}"
+  }
+
+  metadata {
+    Name = "${var.tectonic_cluster_name}-bootstrap"
+
+    # "kubernetes.io/cluster/${var.tectonic_cluster_name}" = "owned"
+    tectonicClusterID = "${var.tectonic_cluster_id}"
   }
 }

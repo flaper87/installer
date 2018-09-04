@@ -30,6 +30,10 @@ output "worker_subnet_ids" {
   value = "${local.worker_subnet_ids}"
 }
 
+output "bootstrap_port_id" {
+  value = "${openstack_networking_port_v2.bootstrap_port.id}"
+}
+
 /*
 # We have to do this join() & split() 'trick' because null_data_source and
 # the ternary operator can't output lists or maps
