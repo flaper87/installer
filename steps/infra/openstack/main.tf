@@ -35,8 +35,9 @@ module "masters" {
   insecure            = "${var.tectonic_openstack_credentials_insecure}"
   instance_count      = "${var.tectonic_master_count}"
   key                 = "${var.tectonic_openstack_credentials_key}"
-  master_sg_ids       = "${concat(var.tectonic_openstack_master_extra_sg_ids, list(local.sg_id))}"
-  openstack_lbs       = "${local.openstack_lbs}"
+  master_sg_ids       = "${concat(var.tectonic_openstack_master_extra_sg_ids, list(module.vpc.master_sg_id))}"
+  # NOTE(shadower): we're not actually using `openstack_lbs` anywhere yet are we?
+  # openstack_lbs       = "${module.vpc.openstack_lbs}"
   password            = "${var.tectonic_openstack_credentials_password}"
   private_endpoints   = "${local.private_endpoints}"
   project_domain_id   = "${var.tectonic_openstack_credentials_project_domain_id}"
@@ -46,7 +47,7 @@ module "masters" {
   root_volume_iops    = "${var.tectonic_openstack_master_root_volume_iops}"
   root_volume_size    = "${var.tectonic_openstack_master_root_volume_size}"
   root_volume_type    = "${var.tectonic_openstack_master_root_volume_type}"
-  subnet_ids          = "${local.subnet_ids}"
+  subnet_ids          = "${module.vpc.master_subnet_ids}"
   swauth              = "${var.tectonic_openstack_credentials_swauth}"
   tenant_id           = "${var.tectonic_openstack_credentials_tenant_id}"
   tenant_name         = "${var.tectonic_openstack_credentials_tenant_name}"
@@ -88,7 +89,7 @@ module "workers" {
   root_volume_iops    = "${var.tectonic_openstack_worker_root_volume_iops}"
   root_volume_size    = "${var.tectonic_openstack_worker_root_volume_size}"
   root_volume_type    = "${var.tectonic_openstack_worker_root_volume_type}"
-  subnet_ids          = "${local.subnet_ids}"
+  subnet_ids          = "${module.vpc.worker_subnet_ids}"
   swauth              = "${var.tectonic_openstack_credentials_swauth}"
   tenant_id           = "${var.tectonic_openstack_credentials_tenant_id}"
   tenant_name         = "${var.tectonic_openstack_credentials_tenant_name}"
@@ -100,7 +101,7 @@ module "workers" {
   user_domain_name = "${var.tectonic_openstack_credentials_user_domain_name}"
   user_id          = "${var.tectonic_openstack_credentials_user_id}"
   user_name        = "${var.tectonic_openstack_credentials_user_name}"
-  worker_sg_ids    = "${concat(var.tectonic_openstack_worker_extra_sg_ids, list(local.sg_id))}"
+  worker_sg_ids    = "${concat(var.tectonic_openstack_worker_extra_sg_ids, list(module.vpc.worker_sg_id))}"
 }
 
 

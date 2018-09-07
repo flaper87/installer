@@ -128,9 +128,9 @@ func (c *ConfigGenerator) installConfig() (*types.InstallConfig, error) {
 	switch c.Platform {
 	case config.PlatformAWS:
 		platform.AWS = &types.AWSPlatform{
-			Region:       c.Region,
-			VPCID:        c.VPCID,
-			VPCCIDRBlock: c.VPCCIDRBlock,
+			Region:       c.AWS.Region,
+			VPCID:        c.AWS.VPCID,
+			VPCCIDRBlock: c.AWS.VPCCIDRBlock,
 		}
 		masterPlatformConfig.AWS = &types.AWSMachinePoolPlatformConfig{
 			InstanceType: c.AWS.Master.EC2Type,
@@ -148,6 +148,28 @@ func (c *ConfigGenerator) installConfig() (*types.InstallConfig, error) {
 				IOPS: c.AWS.Worker.WorkerRootVolume.IOPS,
 				Size: c.AWS.Worker.WorkerRootVolume.Size,
 				Type: c.AWS.Worker.WorkerRootVolume.Type,
+			},
+		}
+	case config.PlatformOpenStack:
+		platform.OpenStack = &types.OpenStackPlatform{
+			Region:       c.OpenStack.Region,
+			VPCID:        c.OpenStack.VPCID,
+			VPCCIDRBlock: c.OpenStack.VPCCIDRBlock,
+		}
+		masterPlatformConfig.OpenStack = &types.OpenStackMachinePoolPlatformConfig{
+			FlavorName: c.OpenStack.Master.FlavorName,
+			OpenStackRootVolume: types.OpenStackRootVolume{
+				IOPS: c.OpenStack.Master.MasterRootVolume.IOPS,
+				Size: c.OpenStack.Master.MasterRootVolume.Size,
+				Type: c.OpenStack.Master.MasterRootVolume.Type,
+			},
+		}
+		workerPlatformConfig.OpenStack = &types.OpenStackMachinePoolPlatformConfig{
+			FlavorName: c.OpenStack.Worker.FlavorName,
+			OpenStackRootVolume: types.OpenStackRootVolume{
+				IOPS: c.OpenStack.Worker.WorkerRootVolume.IOPS,
+				Size: c.OpenStack.Worker.WorkerRootVolume.Size,
+				Type: c.OpenStack.Worker.WorkerRootVolume.Type,
 			},
 		}
 	case config.PlatformLibvirt:
