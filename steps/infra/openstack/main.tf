@@ -4,30 +4,8 @@ locals {
 }
 
 provider "openstack" {
-  auth_url            = "${var.tectonic_openstack_credentials_auth_url}"
-  cacert_file         = "${var.tectonic_openstack_credentials_cacert_file}"
-  cert                = "${var.tectonic_openstack_credentials_cert}"
-  cloud               = "${var.tectonic_openstack_credentials_cloud}"
-  domain_id           = "${var.tectonic_openstack_credentials_domain_id}"
-  domain_name         = "${var.tectonic_openstack_credentials_domain_name}"
-  endpoint_type       = "${var.tectonic_openstack_credentials_endpoint_type}"
-  insecure            = "${var.tectonic_openstack_credentials_insecure}"
-  key                 = "${var.tectonic_openstack_credentials_key}"
-  password            = "${var.tectonic_openstack_credentials_password}"
-  project_domain_id   = "${var.tectonic_openstack_credentials_project_domain_id}"
-  project_domain_name = "${var.tectonic_openstack_credentials_project_domain_name}"
-  region              = "${var.tectonic_openstack_region}"
-  region              = "${var.tectonic_openstack_credentials_region}"
-  swauth              = "${var.tectonic_openstack_credentials_swauth}"
-  tenant_id           = "${var.tectonic_openstack_credentials_tenant_id}"
-  tenant_name         = "${var.tectonic_openstack_credentials_tenant_name}"
-  token               = "${var.tectonic_openstack_credentials_token}"
-  use_octavia         = "${var.tectonic_openstack_credentials_use_octavia}"
-  user_domain_id      = "${var.tectonic_openstack_credentials_user_domain_id}"
-  user_domain_name    = "${var.tectonic_openstack_credentials_user_domain_name}"
-  user_id             = "${var.tectonic_openstack_credentials_user_id}"
-  user_name           = "${var.tectonic_openstack_credentials_user_name}"
-  version             = ">=1.6.0"
+  region  = "${var.tectonic_openstack_region}"
+  version = ">=1.6.0"
 }
 
 module "container_linux" {
@@ -36,6 +14,97 @@ module "container_linux" {
   release_channel = "${var.tectonic_container_linux_channel}"
   release_version = "${var.tectonic_container_linux_version}"
 }
+
+module "masters" {
+  source = "../../../modules/openstack/masters"
+
+  auth_url            = "${var.tectonic_openstack_credentials_auth_url}"
+  base_domain         = "${var.tectonic_base_domain}"
+  base_image          = "${var.tectonic_openstack_base_image}"
+  cacert_file         = "${var.tectonic_openstack_credentials_cacert_file}"
+  cert                = "${var.tectonic_openstack_credentials_cert}"
+  cloud               = "${var.tectonic_openstack_credentials_cloud}"
+  cluster_id          = "${var.tectonic_cluster_id}"
+  cluster_name        = "${var.tectonic_cluster_name}"
+  container_images    = "${var.tectonic_container_images}"
+  domain_id           = "${var.tectonic_openstack_credentials_domain_id}"
+  domain_name         = "${var.tectonic_openstack_credentials_domain_name}"
+  endpoint_type       = "${var.tectonic_openstack_credentials_endpoint_type}"
+  extra_tags          = "${var.tectonic_openstack_extra_tags}"
+  flavor_name         = "${var.tectonic_openstack_master_flavor_name}"
+  insecure            = "${var.tectonic_openstack_credentials_insecure}"
+  instance_count      = "${var.tectonic_master_count}"
+  key                 = "${var.tectonic_openstack_credentials_key}"
+  master_sg_ids       = "${concat(var.tectonic_openstack_master_extra_sg_ids, list(local.sg_id))}"
+  openstack_lbs       = "${local.openstack_lbs}"
+  password            = "${var.tectonic_openstack_credentials_password}"
+  private_endpoints   = "${local.private_endpoints}"
+  project_domain_id   = "${var.tectonic_openstack_credentials_project_domain_id}"
+  project_domain_name = "${var.tectonic_openstack_credentials_project_domain_name}"
+  public_endpoints    = "${local.public_endpoints}"
+  region              = "${var.tectonic_openstack_credentials_region}"
+  root_volume_iops    = "${var.tectonic_openstack_master_root_volume_iops}"
+  root_volume_size    = "${var.tectonic_openstack_master_root_volume_size}"
+  root_volume_type    = "${var.tectonic_openstack_master_root_volume_type}"
+  subnet_ids          = "${local.subnet_ids}"
+  swauth              = "${var.tectonic_openstack_credentials_swauth}"
+  tenant_id           = "${var.tectonic_openstack_credentials_tenant_id}"
+  tenant_name         = "${var.tectonic_openstack_credentials_tenant_name}"
+  token               = "${var.tectonic_openstack_credentials_token}"
+  use_octavia         = "${var.tectonic_openstack_credentials_use_octavia}"
+  user_data_igns      = "${var.tectonic_ignition_masters}"
+  user_domain_id      = "${var.tectonic_openstack_credentials_user_domain_id}"
+  user_domain_name    = "${var.tectonic_openstack_credentials_user_domain_name}"
+  user_id             = "${var.tectonic_openstack_credentials_user_id}"
+  user_name           = "${var.tectonic_openstack_credentials_user_name}"
+}
+
+module "workers" {
+  source = "../../../modules/openstack/workers"
+
+  auth_url            = "${var.tectonic_openstack_credentials_auth_url}"
+  base_domain         = "${var.tectonic_base_domain}"
+  base_image          = "${var.tectonic_openstack_base_image}"
+  cacert_file         = "${var.tectonic_openstack_credentials_cacert_file}"
+  cert                = "${var.tectonic_openstack_credentials_cert}"
+  cloud               = "${var.tectonic_openstack_credentials_cloud}"
+  cluster_id          = "${var.tectonic_cluster_id}"
+  cluster_name        = "${var.tectonic_cluster_name}"
+  container_images    = "${var.tectonic_container_images}"
+  domain_id           = "${var.tectonic_openstack_credentials_domain_id}"
+  domain_name         = "${var.tectonic_openstack_credentials_domain_name}"
+  endpoint_type       = "${var.tectonic_openstack_credentials_endpoint_type}"
+  extra_tags          = "${var.tectonic_openstack_extra_tags}"
+  flavor_name         = "${var.tectonic_openstack_worker_flavor_name}"
+  insecure            = "${var.tectonic_openstack_credentials_insecure}"
+  instance_count      = "${var.tectonic_worker_count}"
+  key                 = "${var.tectonic_openstack_credentials_key}"
+  password            = "${var.tectonic_openstack_credentials_password}"
+  private_endpoints   = "${local.private_endpoints}"
+  project_domain_id   = "${var.tectonic_openstack_credentials_project_domain_id}"
+  project_domain_name = "${var.tectonic_openstack_credentials_project_domain_name}"
+  public_endpoints    = "${local.public_endpoints}"
+  region              = "${var.tectonic_openstack_credentials_region}"
+  root_volume_iops    = "${var.tectonic_openstack_worker_root_volume_iops}"
+  root_volume_size    = "${var.tectonic_openstack_worker_root_volume_size}"
+  root_volume_type    = "${var.tectonic_openstack_worker_root_volume_type}"
+  subnet_ids          = "${local.subnet_ids}"
+  swauth              = "${var.tectonic_openstack_credentials_swauth}"
+  tenant_id           = "${var.tectonic_openstack_credentials_tenant_id}"
+  tenant_name         = "${var.tectonic_openstack_credentials_tenant_name}"
+  token               = "${var.tectonic_openstack_credentials_token}"
+  use_octavia         = "${var.tectonic_openstack_credentials_use_octavia}"
+
+  user_data_ign    = "${file("${path.cwd}/${var.tectonic_ignition_worker}")}"
+  user_domain_id   = "${var.tectonic_openstack_credentials_user_domain_id}"
+  user_domain_name = "${var.tectonic_openstack_credentials_user_domain_name}"
+  user_id          = "${var.tectonic_openstack_credentials_user_id}"
+  user_name        = "${var.tectonic_openstack_credentials_user_name}"
+  worker_sg_ids    = "${concat(var.tectonic_openstack_worker_extra_sg_ids, list(local.sg_id))}"
+}
+
+
+# TODO(shadower) add a dns module here
 
 module "vpc" {
   source = "../../../modules/openstack/topology"
@@ -81,42 +150,12 @@ module "vpc" {
   workers_count             = "${var.tectonic_worker_count}"
 }
 
-/*
-# TNC
-resource "openstack_route53_zone" "tectonic_int" {
-  count         = "${local.private_endpoints ? "${var.tectonic_openstack_external_private_zone == "" ? 1 : 0 }" : 0}"
-  name          = "${var.tectonic_base_domain}"
+resource "openstack_objectstorage_container_v1" "tectonic" {
+  name = "${lower(var.tectonic_cluster_name)}-tnc.${var.tectonic_base_domain}"
 
-  force_destroy = true
-  vpc_id        = "${module.vpc.vpc_id}"
-
-  tags = "${merge(map(
-      "Name", "${var.tectonic_cluster_name}_tectonic_int",
+  metadata = "${merge(map(
+      "Name", "${var.tectonic_cluster_name}-ignition-master",
       "KubernetesCluster", "${var.tectonic_cluster_name}",
       "tectonicClusterID", "${var.tectonic_cluster_id}"
     ), var.tectonic_openstack_extra_tags)}"
 }
-
-
-module "dns" {
-  source = "../../../modules/dns/route53"
-
-  api_external_elb_dns_name = "${module.vpc.openstack_api_external_dns_name}"
-  api_external_elb_zone_id  = "${module.vpc.openstack_elb_api_external_zone_id}"
-  api_internal_elb_dns_name = "${module.vpc.openstack_api_internal_dns_name}"
-  api_internal_elb_zone_id  = "${module.vpc.openstack_elb_api_internal_zone_id}"
-  api_ip_addresses          = "${module.vpc.openstack_lbs}"
-  base_domain               = "${var.tectonic_base_domain}"
-  cluster_id                = "${var.tectonic_cluster_id}"
-  cluster_name              = "${var.tectonic_cluster_name}"
-  console_elb_dns_name      = "${module.vpc.openstack_console_dns_name}"
-  console_elb_zone_id       = "${module.vpc.openstack_elb_console_zone_id}"
-  elb_alias_enabled         = true
-  external_vpc_id           = "${module.vpc.vpc_id}"
-  extra_tags                = "${var.tectonic_openstack_extra_tags}"
-  master_count              = "${var.tectonic_master_count}"
-  private_endpoints         = "${local.private_endpoints}"
-  private_zone_id           = "${var.tectonic_openstack_external_private_zone != "" ? var.tectonic_openstack_external_private_zone : join("", openstack_route53_zone.tectonic_int.*.zone_id)}"
-  public_endpoints          = "${local.public_endpoints}"
-}*/
-
