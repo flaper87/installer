@@ -11,7 +11,7 @@ resource "openstack_networking_secgroup_rule_v2" "master_egress" {
   security_group_id = "${openstack_networking_secgroup_v2.master.id}"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "master_tnc" {
+resource "openstack_networking_secgroup_rule_v2" "master_mcs" {
   direction         = "ingress"
   ethertype         = "IPv4"
   protocol          = "tcp"
