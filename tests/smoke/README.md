@@ -1,22 +1,12 @@
-# Tectonic Smoke Tests
+# OpenShift Installer Smoke Tests
 
-This directory contains all smoke tests for Tectonic.
-The smoke tests are a set of Golang test files that perform minimal validation of a running Tectonic cluster.
-This directory is further partitioned into platform-specific directories and should conform to the following directory hierarchy:
-
-```
-smoke/
-├── aws        # Smoke tests for AWS
-│   └── vars   # Terraform tfvars files for AWS smoke tests
-├── *_test.go  # Smoke tests for all platforms
-├── vendor     # Smoke test dependencies
-└── ...
-```
+This directory contains all smoke tests for OpenShift Installer.
+The smoke tests are a set of Golang test files that perform minimal validation of a running OpenShift cluster.
 
 ## Getting Started
 
-The smoke tests assume a running Tectonic cluster, so before running any tests:
-1. create a Tectonic cluster; and
+The smoke tests assume a running OpenShift cluster, so before running any tests:
+1. create a OpenShift cluster; and
 2. download the cluster's kubeconfig to a known location.
 
 ## Running
@@ -31,29 +21,18 @@ export SMOKE_KUBECONFIG=/path/to/kubeconfig
 Compile the smoke test binary from the root directory of the project:
 
 ```sh
-bazel build tests/smoke
+bazel build smoke_tests
 ```
 
-The tests can then be run by invoking the `smoke` binary in the `bazel-bin/tests/smoke/linux_amd64_stripped` directory.
-This binary accepts `--cluster` and `--qa` flags to specify which tests suites should be run, e.g.:
+The tests can then be run by invoking the `go_default_test` binary in the `bazel-bin/tests/smoke/linux_amd64_pure_stripped` directory.
 
-```sh
-bazel-bin/tests/smoke/linux_amd64_stripped/smoke --cluster --qa
-```
-
-*Note*: the `smoke` binary accepts several flags available to the `go test` command; to list them, invoke the `smoke` binary with the `--help` flag.
-For example, to run the cluster and QA test suites verbosely, use the `--test.v` flag:
-
-```sh
-bazel-bin/tests/smoke/linux_amd64_stripped/smoke --cluster --qa --test.v
-```
+*Note*: the `go_default_test` binary accepts several flags available to the `go test` command; to list them, invoke the `go_default_test` binary with the `-help` flag.
 
 ## Cluster Suite
 
 The cluster test suite runs a series of tests designed to verify the overall health of the cluster and ensure that all expected components are present.
-The cluster test suite requires four additional parameters:
+The cluster test suite requires additional parameters:
 
-* whether or not Calico network policy support is enabled;
 * the number of nodes in the cluster;
 * the paths of manifests deployed on the cluster; and
 * whether or not to test for experimental manifests.
@@ -61,33 +40,14 @@ The cluster test suite requires four additional parameters:
 Export the following environment variables to parameterize the cluster tests:
 
 ```sh
-export SMOKE_NETWORKING=canal
 export SMOKE_NODE_COUNT=3
 export SMOKE_MANIFEST_PATHS=/path/to/kubernetes/manifests
 export SMOKE_MANIFEST_EXPERIMENTAL=true
 ```
 
-To run the cluster test suite, invoke the smoke test binary with the `--cluster` flag:
-```sh
-bazel-bin/tests/smoke/linux_amd64_stripped/smoke --cluster
-```
-
-## QA Suite
-
-The QA test suite is designed to automate several QA checklist items that verify that Tectonic cluster integrations work as expected.
-The QA test suite requires two additional parameters:
-
-* the spec of the BigQuery database to test for cluster metrics; and
-* the path to a file containing Google application credentials with job permissions on BigQuery database.
-
-Export the following environment variables to parameterize the QA tests:
+To run the cluster test suite, invoke the smoke test binary with the `-cluster` flag.
+To run the cluster suite verbosely, add the `-test.v` flag:
 
 ```sh
-export SMOKE_BIGQUERY_SPEC=bigquery://<project>.<dataset>.<table>
-export GOOGLE_APPLICATION_CREDENTIALS=/path/to/google/application/credentials
-```
-
-To run the QA suite, invoke the smoke test binary with the `--qa` flag:
-```sh
-bazel-bin/tests/smoke/linux_amd64_stripped/smoke --qa
+bazel-bin/tests/smoke/linux_amd64_pure_stripped/go_default_test -cluster -test.v
 ```

@@ -14,15 +14,15 @@ Options:
   --force           Override user input prompts. Useful for automation.
 
   --date-override   (optional) Date of the format YYYY-MM-DD that overrides the
-                    default tag value of today's date. This script tags resources
+                    default tag value of tomorrow's date. This script tags resources
                     with 'expirationDate: some-date-string', where some-date-string
-                    is replaced with either the following days' date or date-override.
+                    is replaced with either tomorrow's date or date-override.
 
 EOF
 }
 
 force=
-date_override=
+date_string=
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -34,30 +34,29 @@ while [ $# -gt 0 ]; do
       force=true
     ;;
     --date-override)
-      date_override="${2:-}"
+      date_string="${2:-}"
       shift
     ;;
     *)
-      echo "Flag '$2' is not supported."
-      exit
+      echo "Flag '$1' is not supported." >&2
+      exit 1
     ;;
   esac
   shift
 done
 
-if ! command -v jq > /dev/null || ! command -v aws > /dev/null; then
-  "Dependencies not installed."
+if ! command -V jq >/dev/null || ! command -V aws >/dev/null; then
+  echo "Missing required dependencies" >&2
   exit 1
 fi
 
 set -e
 
 # Tag all Route53 hosted zones that do not already have a tag with the same keys,
-# in this case 'expirationDate', with today's date as default, or
-# with the DATE_VALUE_OVERRIDE value. Format YYYY-MM-DD.
-date_string="$(date "+%Y-%m-%d")"
-if [ -n "$date_override" ]; then
-	date_string="${date_override}"
+# in this case 'expirationDate', with tomorrow's date as default, or
+# with the --date-override value. Format YYYY-MM-DD.
+if [ -z "$date_string" ]; then
+  date_string="$(date -d tomorrow '+%Y-%m-%d')"
 fi
 
 tags="[{\"Key\":\"expirationDate\",\"Value\":\"$date_string\"}]"
@@ -68,7 +67,7 @@ echo "$tags"
 if [ ! $force ]; then
   read -rp "Proceed tagging these resources? [y/N]: " yn
   if [ "$yn" != "y" ]; then
-    echo "Aborting tagging and cleaning up."
+    echo "Aborting tagging and cleaning up." >&2
     exit 1
   fi
 fi
@@ -77,7 +76,7 @@ private_zones=$(aws route53 list-hosted-zones | \
                 jq ".HostedZones[] | select(.Config.PrivateZone == true) | .Id" | \
                 sed "s@\"@@g")
 
-for key in $(echo -e "$tags" | jq ".[].Key"); do
+for key in $(echo "$tags" | jq ".[].Key"); do
   for zone in $private_zones; do
     zone="${zone##*/}"
     is_not_tagged=$(aws route53 list-tags-for-resource \
@@ -87,11 +86,11 @@ for key in $(echo -e "$tags" | jq ".[].Key"); do
     if [ -z "$is_not_tagged" ]; then
       if aws route53 change-tags-for-resource \
       --resource-type hostedzone \
-      --add-tags "$(echo -e "$tags")" \
+      --add-tags "$tags" \
       --resource-id "${zone##*/}"; then
         echo "Tagged hosted zone ${zone##*/}"
       else
-        echo "Error tagging hosted zone ${zone##*/}"
+        echo "Error tagging hosted zone ${zone##*/}" >&2
       fi
     fi
   done

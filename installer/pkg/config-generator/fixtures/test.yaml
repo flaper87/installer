@@ -1,9 +1,0 @@
-name: test
-platform: aws
-baseDomain: cluster.com
-etcd:
-  nodePools:
-    - etcd
-nodePools:
-  - name: etcd
-    count: 3
