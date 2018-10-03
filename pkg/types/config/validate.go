@@ -13,7 +13,7 @@ import (
 	"github.com/openshift/installer/pkg/types/config/aws"
 
 	"github.com/coreos/tectonic-config/config/tectonic-network"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -216,15 +216,11 @@ func (c *Cluster) validateNetworkType() error {
 // a single error for convenience.
 func (c *Cluster) ValidateAndLog() error {
 	if errs := c.Validate(); len(errs) != 0 {
-		s := ""
-		if len(errs) != 1 {
-			s = "s"
-		}
-		log.Errorf("Found %d error%s in the cluster definition:", len(errs), s)
+		logrus.Errorf("Found %d error(s) in the cluster definition:", len(errs))
 		for i, err := range errs {
-			log.Errorf("error %d: %v", i+1, err)
+			logrus.Errorf("  Error %d: %v", i+1, err)
 		}
-		return fmt.Errorf("found %d cluster definition error%s", len(errs), s)
+		return fmt.Errorf("found %d cluster definition error(s)", len(errs))
 	}
 	return nil
 }
@@ -248,8 +244,9 @@ func (c *Cluster) validateAWSEndpoints() error {
 // matches the S3 bucket naming rules. Not all rules are checked
 // because Tectonic controls the generation of S3 bucket names, creating
 // buckets of the form: <cluster-name>.<domain-name>
+// If domain-name contains a trailing dot, it's removed from the bucket name.
 func (c *Cluster) validateS3Bucket() error {
-	bucket := fmt.Sprintf("%s.%s", c.Name, c.BaseDomain)
+	bucket := fmt.Sprintf("%s.%s", c.Name, strings.TrimRight(c.BaseDomain, "."))
 	if len(bucket) > maxS3BucketNameLength {
 		return fmt.Errorf("the S3 bucket name %q, generated from the cluster name and base domain, is too long; S3 bucket names must be less than 63 characters; please choose a shorter cluster name or base domain", bucket)
 	}

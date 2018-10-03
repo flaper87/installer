@@ -5,12 +5,14 @@ set -ex
 cd "$(dirname "$0")/.."
 
 MODE="${MODE:-release}"
-TAGS=
+LDFLAGS="${LDFLAGS} -X main.version=$(git describe --always --abbrev=0 --dirty)"
+TAGS="${TAGS:-}"
+export CGO_ENABLED=0
 
 case "${MODE}" in
 release)
-	TAGS=release
-	GOPATH="${PWD}/vendor:${GOPATH}" go generate ./data
+	TAGS="${TAGS} release"
+	GOPATH="${PWD}/vendor:$(go env GOPATH)" go generate ./data
 	;;
 dev)
 	;;
@@ -19,4 +21,9 @@ dev)
 	exit 1
 esac
 
-CGO_ENABLED=0 go build -tags "${TAGS}" -o ./bin/openshift-install ./cmd/openshift-install
+if (echo "${TAGS}" | grep -q 'libvirt_destroy')
+then
+	export CGO_ENABLED=1
+fi
+
+go build -ldflags "${LDFLAGS}" -tags "${TAGS}" -o ./bin/openshift-install ./cmd/openshift-install
