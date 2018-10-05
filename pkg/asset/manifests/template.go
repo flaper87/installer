@@ -1,5 +1,21 @@
 package manifests
 
+// AwsCredsSecretData holds encoded credentials and is used to generate cloud-creds secret
+type AwsCredsSecretData struct {
+	Base64encodeAccessKeyID     string
+	Base64encodeSecretAccessKey string
+}
+
+// OpenStackCredsSecretData holds encoded credentials and is used to generate cloud-creds secret
+type OpenStackCredsSecretData struct {
+	Base64encodeCloudCreds string
+}
+
+type cloudCredsSecretData struct {
+	AWS       *AwsCredsSecretData
+	OpenStack *OpenStackCredsSecretData
+}
+
 type bootkubeTemplateData struct {
 	AggregatorCaCert                string
 	AggregatorCaKey                 string
@@ -35,6 +51,7 @@ type bootkubeTemplateData struct {
 }
 
 type tectonicTemplateData struct {
+	CloudCreds                             cloudCredsSecretData
 	IngressCaCert                          string
 	IngressKind                            string
 	IngressStatusPassword                  string

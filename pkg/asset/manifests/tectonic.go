@@ -1,13 +1,17 @@
 package manifests
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/base64"
+	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
 
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/openshift/installer/pkg/asset"
 	"github.com/openshift/installer/pkg/asset/installconfig"
 	"github.com/openshift/installer/pkg/asset/machines"
@@ -17,12 +21,17 @@ import (
 
 const (
 	tectonicManifestDir = "tectonic"
+	// TODO: Verify this works
+	openStackCredsFile = "/etc/openstack/clouds.yaml"
 )
 
 var (
 	tectonicConfigPath = filepath.Join(tectonicManifestDir, "00_cluster-config.yaml")
 
 	_ asset.WritableAsset = (*Tectonic)(nil)
+
+	// TODO: Use this if get permission denied errors?
+	//openStackCredsFile = os.Getenv("HOME") + "/.config/openstack"
 )
 
 // Tectonic generates the dependent resource manifests for tectonic (as against bootkube)
@@ -60,8 +69,36 @@ func (t *Tectonic) Generate(dependencies asset.Parents) error {
 	master := &machines.Master{}
 	addon := &kubeAddonOperator{}
 	dependencies.Get(installConfig, ingressCertKey, kubeCA, clusterk8sio, worker, master, addon)
+	var cloudCreds cloudCredsSecretData
+	switch {
+	case installConfig.Config.Platform.AWS != nil:
+		p := credentials.SharedCredentialsProvider{}
+		creds, err := p.Retrieve()
+		if err != nil {
+			return err
+		}
+		cloudCreds = cloudCredsSecretData{
+			AWS: &AwsCredsSecretData{
+				Base64encodeAccessKeyID:     base64.StdEncoding.EncodeToString([]byte(creds.AccessKeyID)),
+				Base64encodeSecretAccessKey: base64.StdEncoding.EncodeToString([]byte(creds.SecretAccessKey)),
+			},
+		}
+	case installConfig.Config.Platform.OpenStack != nil:
+		credsEncoded, err := credsFileEncode(openStackCredsFile)
+		if err != nil {
+			return err
+		}
+		cloudCreds = cloudCredsSecretData{
+			OpenStack: &OpenStackCredsSecretData{
+				Base64encodeCloudCreds: credsEncoded,
+			},
+		}
+	default:
+		return errors.Errorf("unknown provider, could not populate cloud credentials secret data")
+	}
 
 	templateData := &tectonicTemplateData{
+		CloudCreds:                             cloudCreds,
 		IngressCaCert:                          base64.StdEncoding.EncodeToString(kubeCA.Cert()),
 		IngressKind:                            "haproxy-router",
 		IngressStatusPassword:                  installConfig.Config.Admin.Password, // FIXME: generate a new random one instead?
@@ -74,6 +111,7 @@ func (t *Tectonic) Generate(dependencies asset.Parents) error {
 	}
 
 	assetData := map[string][]byte{
+		"99_cloud-creds-secret.yaml":                             applyTemplateData(content.CloudCredsSecret, templateData),
 		"99_binding-discovery.yaml":                              []byte(content.BindingDiscovery),
 		"99_kube-addon-00-appversion.yaml":                       []byte(content.AppVersionKubeAddon),
 		"99_kube-addon-01-operator.yaml":                         applyTemplateData(content.KubeAddonOperator, templateData),
@@ -83,6 +121,7 @@ func (t *Tectonic) Generate(dependencies asset.Parents) error {
 		"99_openshift-cluster-api_worker-machineset.yaml":        worker.MachineSetRaw,
 		"99_openshift-cluster-api_worker-user-data-secret.yaml":  worker.UserDataSecretRaw,
 		"99_role-admin.yaml":                                     []byte(content.RoleAdmin),
+		"99_role-cloud-creds-secret-reader.yaml":                 []byte(content.RoleCloudCredsSecretReader),
 		"99_role-user.yaml":                                      []byte(content.RoleUser),
 		"99_tectonic-ingress-00-appversion.yaml":                 []byte(content.AppVersionTectonicIngress),
 		"99_tectonic-ingress-01-cluster-config.yaml":             applyTemplateData(content.ClusterConfigTectonicIngress, templateData),
@@ -116,7 +155,6 @@ func (t *Tectonic) Generate(dependencies asset.Parents) error {
 			Data:     data,
 		})
 	}
-
 	return nil
 }
 
@@ -152,4 +190,15 @@ func (t *Tectonic) Load(f asset.FileFetcher) (bool, error) {
 
 	t.FileList, t.TectonicConfig = fileList, tectonicConfig
 	return true, nil
+}
+
+// credsFileEncode returns contents of a file as base64 encoded string
+func credsFileEncode(credsFile string) (string, error) {
+	f, _ := os.Open(credsFile)
+	reader := bufio.NewReader(f)
+	credsData, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(credsData), nil
 }
