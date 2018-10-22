@@ -93,8 +93,6 @@ func (t *Tectonic) Generate(dependencies asset.Parents) error {
 				Base64encodeCloudCreds: credsEncoded,
 			},
 		}
-	default:
-		return errors.Errorf("unknown provider, could not populate cloud credentials secret data")
 	}
 
 	templateData := &tectonicTemplateData{
