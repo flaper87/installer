@@ -21,7 +21,7 @@ import (
 
 const (
 	tectonicManifestDir = "tectonic"
-	// TODO: Verify this works
+	// TODO: Verify this works, if not see var below
 	openStackCredsFile = "/etc/openstack/clouds.yaml"
 )
 
@@ -119,7 +119,7 @@ func (t *Tectonic) Generate(dependencies asset.Parents) error {
 		"99_openshift-cluster-api_worker-machineset.yaml":        worker.MachineSetRaw,
 		"99_openshift-cluster-api_worker-user-data-secret.yaml":  worker.UserDataSecretRaw,
 		"99_role-admin.yaml":                                     []byte(content.RoleAdmin),
-		"99_role-cloud-creds-secret-reader.yaml":                 []byte(content.RoleCloudCredsSecretReader),
+		"99_role-cloud-creds-secret-reader.yaml":                 applyTemplateData(content.RoleCloudCredsSecretReader, templateData),
 		"99_role-user.yaml":                                      []byte(content.RoleUser),
 		"99_tectonic-ingress-00-appversion.yaml":                 []byte(content.AppVersionTectonicIngress),
 		"99_tectonic-ingress-01-cluster-config.yaml":             applyTemplateData(content.ClusterConfigTectonicIngress, templateData),

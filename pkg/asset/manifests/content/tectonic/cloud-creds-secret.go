@@ -12,13 +12,19 @@ kind: Secret
 apiVersion: v1
 metadata:
   namespace: kube-system
-  name: cloud-creds
+{{- if .CloudCreds.AWS}}
+  name: aws-creds
+{{- else if .CloudCreds.OpenStack}}
+  name: openstack-creds
+{{- else }}
+  name: empty-no-cloud-creds
+{{- end}}
 data:
 {{- if .CloudCreds.AWS}}
   aws_access_key_id: {{.CloudCreds.AWS.Base64encodeAccessKeyID}}
   aws_secret_access_key: {{.CloudCreds.AWS.Base64encodeSecretAccessKey}}
 {{- else if .CloudCreds.OpenStack}}
-  credentials: {{.CloudCreds.OpenStack.Base64encodeCloudCreds}}
+  clouds.yaml: {{.CloudCreds.OpenStack.Base64encodeCloudCreds}}
 {{- end}}
 `))
 )
