@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/ghodss/yaml"
+	"github.com/go-yaml/yaml"
 
 	"github.com/gophercloud/utils/openstack/clientconfig"
 	"github.com/openshift/installer/pkg/asset"
@@ -72,9 +72,14 @@ func (t *Tectonic) Generate(dependencies asset.Parents) error {
 			},
 		}
 	case "openstack":
-		clouds, err := clientconfig.LoadCloudsYAML()
+		opts := new(clientconfig.ClientOpts)
+		cloud, err := clientconfig.GetCloudFromYAML(opts)
 		if err != nil {
 			return err
+		}
+		clouds := make(map[string]map[string]*clientconfig.Cloud)
+		clouds["clouds"] = map[string]*clientconfig.Cloud{
+			"openstack": cloud,
 		}
 
 		marshalled, err := yaml.Marshal(clouds)
