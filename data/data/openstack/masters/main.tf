@@ -14,11 +14,7 @@ data "ignition_config" "master_ignition_config" {
 
   files = [
     "${data.ignition_file.master_ifcfg.id}",
-    "${data.ignition_file.master_hacks_script.id}",
-  ]
-
-  systemd = [
-    "${data.ignition_systemd_unit.master_hacks_service.id}",
+    "${data.ignition_file.openstack_cloud_config.id}",
   ]
 }
 
@@ -40,38 +36,22 @@ EOF
     }
 }
 
-data "ignition_file" "master_hacks_script" {
-    filesystem = "root"
-    mode = "493"  // 0755
-    path = "/opt/hacks.sh"
-    content {
-      content = <<EOF
-#!/usr/bin/env bash
-set -ex
+data "ignition_file" "openstack_cloud_config" {
+  filesystem = "root"
+  mode       = "0644"
+  path       = "/etc/cloud/cloud-config"
 
-sed -i '/cloud-provider=openstack/d' /etc/systemd/system/kubelet.service
-
-# NOTE(shadower): this is run before kubelet so we don't need to restart it.
-systemctl daemon-reload
+  content {
+    content = <<EOF
+[Global]
+auth-url = http://10.1.8.86:5000/
+username = openshift
+password = password
+domain-name = default
+tenant-name = openshift
+region = regionOne
 EOF
-    }
-}
-
-data "ignition_systemd_unit" "master_hacks_service" {
-    name = "hacks.service"
-      content = <<EOF
-[Unit]
-Description=Run hacks after bootup
-Before=kubelet.service
-
-[Service]
-Type=oneshot
-ExecStart=/opt/hacks.sh
-RemainAfterExit=true
-
-[Install]
-WantedBy=multi-user.target
-EOF
+  }
 }
 
 resource "openstack_compute_instance_v2" "master_conf" {
