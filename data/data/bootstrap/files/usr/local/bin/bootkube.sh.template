@@ -137,6 +137,15 @@ then
 	# 2. read the default MachineConfigPools rendered by MachineConfigOperator
 	# 3. read any additional MachineConfigs that are needed for the default MachineConfigPools.
 	mkdir --parents /etc/mcc/bootstrap/manifests /etc/kubernetes/manifests/
+
+    echo "HACK: SORT OUT THE OPENSTACK PROVIDER IN MASTER CONFIG"
+    # NOTE(shadower): the cloud provider file must exist and MUST have the correct auth options. We can't just fake it.
+    sed -i 's/cloudProviderConfig.*/cloudProviderConfig: "--cloud-config=\/etc\/cloud\/cloud-config"/g' mco-bootstrap/manifests/machineconfigcontroller-controllerconfig.yaml
+
+    # NOTE(shadower): just disabling the cloud provider doesn't work: MCC will keep restarting with:
+    # "cannot generateMachineConfigs with an empty Platform"
+    # sed -i '/platform: openstack/d' mco-bootstrap/manifests/machineconfigcontroller-controllerconfig.yaml
+
 	cp mco-bootstrap/manifests/* /etc/mcc/bootstrap/manifests/
 	cp mco-bootstrap/machineconfigoperator-bootstrap-pod.yaml /etc/kubernetes/manifests/
 
