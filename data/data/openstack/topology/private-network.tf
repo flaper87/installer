@@ -104,19 +104,6 @@ resource "openstack_networking_port_v2" "lb_port" {
   }
 }
 
-resource "openstack_networking_port_v2" "lb_port" {
-  name = "lb-port"
-
-  admin_state_up     = "true"
-  network_id         = "${openstack_networking_network_v2.openshift-private.id}"
-  security_group_ids = ["${openstack_networking_secgroup_v2.master.id}"]
-  tags               = ["${format("tectonicClusterID=%s", var.cluster_id)}"]
-
-  fixed_ip {
-    "subnet_id" = "${openstack_networking_subnet_v2.masters.id}"
-  }
-}
-
 data "openstack_networking_network_v2" "external_network" {
   name     = "${var.external_network}"
   external = true
